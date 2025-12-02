@@ -6,9 +6,9 @@
 ---
 
 ## 1. Visão Geral da Estrutura
-Nesta etapa, realizamos a inspeção técnica dos dados brutos importados para o ambiente R. O objetivo é mapear a estrutura original, definir a tipagem correta para análise e identificar inconsistências que exijam tratamento na fase de limpeza.
+Nesta etapa, é realizada a inspeção técnica dos dados brutos importados para o ambiente R. O objetivo é mapear a estrutura original, definir a tipagem correta para análise e identificar inconsistências que exijam tratamento na fase de limpeza.
 
-O dataset é composto por dois dataframes principais:
+Como visto, o *dataset* é composto por dois dataframes principais:
 1.  **`df_rides` (Tabela Fato):** Registros transacionais de cada viagem.
 2.  **`df_stations` (Tabela Dimensão):** Cadastro e geolocalização das estações.
 
@@ -79,7 +79,7 @@ Tabela de consulta (Lookup Table) contendo os metadados das estações.
 
 ## 3. Relatório de Qualidade de Dados (Data Quality)
 
-Vamos agora revisar a qualidade dos dados em ambos os dataframes, identificando valores ausentes (NAs), outliers e inconsistências que possam impactar a análise subsequente.
+
 
 Avaliar as colunas de ambos os dataframes para identificar:
 - Valores ausentes (NAs)
@@ -97,8 +97,11 @@ skim(df_stations)
 plot_missing(df_rides)
 
 ```
+![1764179871304](image/02-ANALISE-DIAGNOSTICA/1764179871304.png)
 
-Após a estruturação, aplicamos funções de diagnóstico (`summary`, `skim`, `plot_missing`) e identificamos **4 anomalias críticas** que deverão ser tratadas na etapa de Limpeza de Dados (`04-LIMPEZA_DADOS.md`).
+Ao revisar a qualidade dos dados em ambos os dataframes, identificando valores ausentes (NAs), outliers e inconsistências que possam impactar a análise subsequente apenas na tabela de viagens (`df_rides`).
+
+As funções de diagnóstico (`summary`, `skim`, `plot_missing`) e evidenciaram **4 anomalias críticas** que deverão ser tratadas na etapa de Limpeza de Dados (`04-LIMPEZA_DADOS.md`).
 
 ### 🚩 1. Integridade Referencial (Chaves Órfãs)
 
@@ -124,6 +127,3 @@ Identificamos um padrão de ausência de dados que compromete a modelagem:
 - **Impacto:** Limita severamente a análise geográfica de residência dos usuários.
 
 ---
-
-*Próxima Etapa: Os problemas identificados acima serão tratados no script de Data Cleaning.*
-----

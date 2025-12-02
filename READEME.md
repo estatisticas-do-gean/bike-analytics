@@ -1,47 +1,47 @@
-# 🚲 Sistema +BIKE: Otimização Operacional e Preditiva  
+# 🚲 Sistema +BIKE: Otimização Operacional e Preditiva
 
-Uma abordagem estatística para otimização logística e previsão de churn involuntário em sistemas de bike-sharing.  
-
----
-
-## 🧠 Contexto Pessoal e Acadêmico  
-
-Destaco este projeto como um dos trabalhos acadêmicos mais significativos que desenvolvi.  
-A análise do sistema **BIKE+** foi uma **“consultoria simulada”**, proposta pelo excelente professor da disciplina **EST020 - Laboratório Supervisionado (7º período da graduação em Estatística)**.  
-
-O desafio foi resolvido **como se estivéssemos atuando profissionalmente**, com **poucas instruções diretas**, demandando autonomia total.  
-
-Este projeto é **didático e detalhado de forma excessiva** — não por acaso. É o **primeiro que compartilho no GitHub** (ainda estou aprendendo a usar a plataforma) e sou naturalmente **perfeccionista**.  
-Os próximos repositórios terão uma abordagem mais objetiva e profissional, mas acredito que este formato possa **ajudar outras pessoas** a entender todo o processo envolvido em transformar **dados brutos em informação útil** — o que, por sinal, consome bastante tempo.  
-
-> 🎯 Meu objetivo inicial com este projeto é demonstrar que sei o que estou fazendo,  
-> e que estou pronto para gerar resultados mensuráveis que possam, de alguma forma, **ajudar a sociedade (e conseguir um emprego!)**.  
+Uma abordagem estatística para otimização logística e previsão de churn involuntário em sistemas de *bike-sharing*.
 
 ---
 
-## 📊 Visão Geral do Projeto  
+## 🧠 Contexto Pessoal e Acadêmico
+
+Destaco este projeto como um dos trabalhos acadêmicos mais significativos que desenvolvi.
+A análise do sistema **BIKE+** foi uma **“consultoria simulada”**, proposta pelo excelente professor da disciplina **EST020 - Laboratório Supervisionado (7º período da graduação em Estatística)**.
+
+O desafio foi resolvido **como se estivéssemos atuando profissionalmente**, com **poucas instruções diretas**, demandando autonomia total.
+
+Este projeto é **didático e detalhado de forma excessiva** — não por acaso. É o **primeiro que compartilho no GitHub** (ainda estou aprendendo a usar a plataforma) e sou naturalmente **perfeccionista**.
+Os próximos repositórios terão uma abordagem mais objetiva e profissional, mas acredito que este formato possa **ajudar outras pessoas** a entender todo o processo envolvido em transformar **dados brutos em informação útil** — o que, por sinal, consome bastante tempo.
+
+> 🎯 Meu objetivo inicial com este projeto é demonstrar que sei o que estou fazendo,
+> e que estou pronto para gerar resultados mensuráveis que possam, de alguma forma, **ajudar a sociedade (e conseguir um emprego!)**.
+
+---
+
+## 📊 Visão Geral do Projeto
 
 A **+BIKE** enfrenta desafios operacionais devido à falta de inteligência analítica sobre sua base de usuários.  
-O sistema sofre com desequilíbrio logístico e um ponto de atrito crítico: **viagens que excedem 60 minutos**, gerando **cobranças surpresa e insatisfação**.  
+O sistema sofre com desequilíbrio logístico e um ponto de atrito crítico: **viagens que excedem 60 minutos**, gerando **cobranças surpresa e insatisfação**.
 
-Este projeto aplica **técnicas de Ciência de Dados e Estatística** para transformar dados brutos em decisões estratégicas.  
-
----
-
-## 🎯 Objetivos Principais  
-
-1. **Diagnóstico Operacional**  
-   - Mapear quem usa, como usa e onde estão os gargalos logísticos.  
-
-2. **Modelagem Preditiva**  
-   - Desenvolver um algoritmo capaz de calcular, no momento da retirada,  
-     a probabilidade de uma viagem exceder o tempo limite (Atraso > 60 min).  
+Este projeto aplica **técnicas de Ciência de Dados e Estatística** para transformar dados brutos em decisões estratégicas.
 
 ---
 
-## 🗂 Estrutura do Repositório  
+## 🎯 Objetivos Principais
 
-A documentação foi desenhada para garantir **reprodutibilidade e rastreabilidade**, seguindo o ciclo de vida dos dados:  
+1. **Diagnóstico Operacional**
+   - Mapear quem usa, como usa e onde estão os gargalos logísticos.
+
+2. **Modelagem Preditiva**
+   - Desenvolver um algoritmo capaz de calcular, no momento da retirada,
+     a probabilidade de uma viagem exceder o tempo limite (Atraso > 60 min).
+
+---
+
+## 🗂 Estrutura do Repositório
+
+A documentação foi desenhada para garantir **reprodutibilidade e rastreabilidade**, seguindo o ciclo de vida dos dados:
 
 | Arquivo | Descrição | Status |
 |----------|------------|--------|
@@ -53,39 +53,39 @@ A documentação foi desenhada para garantir **reprodutibilidade e rastreabilida
 
 ---
 
-## 🔧 Metodologia e Tech Stack  
+## 🔧 Metodologia e Tech Stack
 
-O projeto segue um fluxo adaptado do **CRISP-DM**, com foco rigoroso na **validação dos dados antes da modelagem**.  
+O projeto segue um fluxo adaptado do **CRISP-DM**, com foco rigoroso na **validação dos dados antes da modelagem**.
 
 **Principais tecnologias:**
-- 🧮 R (tidyverse ecosystem)  
-- 📘 Documentação em Quarto / Markdown  
-- 💾 Controle de Versão com Git & GitHub  
+- 🧮 R (tidyverse ecosystem)
+- 📘 Documentação em Quarto / Markdown
+- 💾 Controle de Versão com Git & GitHub
 
 ---
 
-## 💡 Destaques da Engenharia de Dados (Fase 1)  
+## 💡 Destaques da Engenharia de Dados (Fase 1)
 
-Antes de qualquer modelagem, foi realizado um processo de **sanitização forense** dos dados (`04-LIMPEZA_DADOS.md`), resultando em:  
+Antes de qualquer modelagem, foi realizado um processo de **sanitização forense** dos dados (`04-LIMPEZA_DADOS.md`), resultando em:
 
-- 🧩 **Recuperação de dados críticos:**  
-  Identificação de erro de inversão temporal que permitiu **recuperar 29.886 registros** que seriam descartados.  
+- 🧩 **Recuperação de dados críticos:**
+  Identificação de erro de inversão temporal que permitiu **recuperar 29.886 registros** que seriam descartados.
 
-- 👶 **Validade biológica:**  
-  Remoção de **2,9%** da base contendo idades impossíveis (ex: nascidos em 2028).  
+- 👶 **Validade biológica:**
+  Remoção de **2,9%** da base contendo idades impossíveis (ex: nascidos em 2028).
 
-- 🔍 **Tratamento de missing values:**  
+- 🔍 **Tratamento de missing values:**
   Estratégia de *explicitação* para os **62%** de dados demográficos ausentes,  
-  transformando ausência em categoria analítica interpretável.  
+  transformando ausência em categoria analítica interpretável.
 
-> “Limpar dados não é apagar erros,  
-> é **interpretar vestígios** para maximizar a informação disponível.”  
+> “Limpar dados não é apagar erros,
+> é **interpretar vestígios** para maximizar a informação disponível.”
 
 ---
 
-## 🚀 Como Reproduzir  
+## 🚀 Como Reproduzir
 
-Este projeto foi construído para ser totalmente **reprodutível**.  
+Este projeto foi construído para ser totalmente **reprodutível**.
 
 ### 1️⃣ Clone o repositório:
 ```bash
