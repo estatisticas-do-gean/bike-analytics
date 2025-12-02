@@ -994,11 +994,16 @@ stamp <- format(Sys.Date(), "%Y%m%d")
 
 # 1. RDS (Preserva tipos R)
 saveRDS(df_rides_clean, file.path(output_dir, paste0("df_rides_clean_", stamp, ".rds")))
+saveRDS(df_stations_clean, file.path(output_dir, paste0("df_stations_clean_", stamp, ".rds")))
 
 # 2. CSV (Interoperabilidade)
 df_rides_clean %>%
   mutate(across(where(is.factor), as.character)) %>% 
   write.csv(file.path(output_dir, paste0("df_rides_clean_", stamp, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
+
+df_stations_clean %>%
+  mutate(across(where(is.factor), as.character)) %>% 
+  write.csv(file.path(output_dir, paste0("df_stations_clean_", stamp, ".csv")), row.names = FALSE, fileEncoding = "UTF-8")
 
 message("\n✅ Processo concluído! Arquivos salvos em: ", output_dir)
 
