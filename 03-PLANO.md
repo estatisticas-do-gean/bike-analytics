@@ -189,30 +189,27 @@ A narrativa segue uma estrutura lógica, inspirada no arco de *storytelling*:
         > Ex:. “Notificar viagens cuja probabilidade prevista > threshold (p ≈ 0.38).”
         > 
 
----
+## 7. Conclusão
+Para garantir a **robustez** e **reprodutibilidade** do trabalho, todo o pipeline será implementado em **R**, utilizando pacotes do **Tidyverse** para manipulação e visualização de dados, e documentado em **Quarto** para facilitar a comunicação dos resultados. A versão do código será controlada via **Git**, assegurando rastreabilidade e colaboração eficiente.
 
-## 7. Reprodutibilidade
 
-Para garantir rastreabilidade e transparência, todo o fluxo será implementado em **R** e documentado em **Quarto**.
 
-```bash
-# Clonar repositório
-git clone https://github.com/gean-gabriel/maisbike.git
-
-# Instalar dependências
-install.packages(c("tidyverse", "lubridate", "ggplot2", "rpart", "yardstick"))
-
-# Renderizar relatório
-quarto render 03-PLANO.qmd
-
-```
-
----
-
-> Síntese:
+> **Síntese:**
 > 
-> 
+>
 > Este plano consolida uma abordagem estatística rigorosa e interpretável.
 > 
-> O resultado esperado é uma análise **robusta**, **defensável** e **acionável**, capaz de converter dados de uso em inteligência de decisão para o sistema +BIKE.
->
+> O resultado esperado é uma análise robusta, defensável e acionável, capaz de converter dados de uso em inteligência de decisão para o sistema +BIKE.
+
+---
+
+## Referências
+- Wickham, H., & Grolemund, G. (2017). *R for Data Science: Import, Tidy, Transform, Visualize, and Model Data*. O'Reilly Media, Inc.
+- Textclean Package Documentation: https://cran.r-project.org/web/packages/textclean/textclean.pdf
+- Tidyverse Package Documentation: https://www.tidyverse.org/
+- Data Cleaning Best Practices: https://www.dataquest.io/blog/data-cleaning-best-practices/
+- CRISP-DM Methodology Overview: https://www.sv-europe.com/crisp-dm-methodology/
+- Data Storytelling Techniques: https://towardsdatascience.com/data-storytelling-techniques-to-make-your-data-pop-5f3f2b8f4b6d
+- Model Evaluation Metrics: https://towardsdatascience.com/understanding-evaluation-metrics-for-classification-models-ff9f4d8b6f3c
+- mlbench Package Documentation: https://cran.r-project.org/web/packages/mlbench/mlbench.pdf
+

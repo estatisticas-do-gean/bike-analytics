@@ -11,7 +11,8 @@ A análise do sistema **BIKE+** foi uma **“consultoria simulada”**, proposta
 
 O desafio foi resolvido **como se estivéssemos atuando profissionalmente**, com **poucas instruções diretas**, demandando autonomia total.
 
-Este projeto é **didático e detalhado de forma excessiva** — não por acaso. É o **primeiro que compartilho no GitHub** (ainda estou aprendendo a usar a plataforma) e sou naturalmente **perfeccionista**.
+Este projeto é **didático e detalhado de forma excessiva** — não por acaso. É o **primeiro que compartilho no GitHub** (ainda estou aprendendo a usar a plataforma) e sou naturalmente **perfeccionista** (reformulando o que está pronto).
+
 Os próximos repositórios terão uma abordagem mais objetiva e profissional, mas acredito que este formato possa **ajudar outras pessoas** a entender todo o processo envolvido em transformar **dados brutos em informação útil** — o que, por sinal, consome bastante tempo.
 
 > 🎯 Meu objetivo inicial com este projeto é demonstrar que sei o que estou fazendo,

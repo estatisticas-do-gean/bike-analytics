@@ -773,14 +773,14 @@ Essas perguntas definem o valor analítico da variável, orientando se ela deve 
 
 | Etapa | Ação Realizada | Resultado |
 | --- | --- | --- |
-| 1️⃣ Chaves Órfãs | Remoção de registros de teste | –9 registros (Integridade OK) |
-| 2️⃣ Datas Inválidas | Filtragem biológica (1920–2010) | –8.477 registros (Validade OK) |
+| 1️⃣ Chaves Órfãs | Remoção de registros de teste | -9 registros (Integridade OK) |
+| 2️⃣ Datas Inválidas | Filtragem biológica (1920–2010) | -8.477 registros (Validade OK) |
 | 3️⃣ Falha de Cálculo | Correção algorítmica de inversão | +29.886 registros recuperados (*Target* OK) |
 | 4️⃣ Demografia | Padronização + Explicitação de NAs | Variável pronta para hipótese |
 
 **Dataset final:** `df_rides_clean`
 
-**Total:** 278.836 observações & 15 variáveis
+**Total:** ***278.836 observações & 15 variáveis***
 
 **Status:** ✅ *Pronto para Fase 2 – Análise Exploratória de Dados (EDA)*
 
@@ -791,6 +791,6 @@ Essas perguntas definem o valor analítico da variável, orientando se ela deve 
 Como foi realizada a Análise Exploratória de Dados (EDA)? Veja o arquivo `05-ANALISE-EXPLORATORIA.md`, juntamente com o *script* (código) `02_EDA.R`.
 
 ---
---- 
+
 
 

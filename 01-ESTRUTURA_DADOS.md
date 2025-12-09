@@ -35,11 +35,15 @@ Este é um conjunto de dados complementar (ou de "lookup") que fornece informaç
 ![1764081684668](image/01-ESTRUTURA_DADOS/1764081684668.png)
 
 *Nota: As duas tabelas se relacionam através das colunas de estação (como `station_start` e `station_end` na Tabela de Viagens, que correspondem às estações listadas na Tabela de Estações).*
+
 ---
+
 ### Resumo da Estrutura dos Dados
 | Tabela            | Linhas   | Colunas | Descrição                                      |
 |-------------------|----------|---------|------------------------------------------------| 
 | `df_rides`       | 287.322  | 10      | Registros detalhados de cada viagem realizada.  |
 | `df_stations`    | 49       | 5       | Informações cadastrais sobre as estações do sistema.   |      
+
 ---
+
 Estas estruturas de dados fornecem a base necessária para a análise exploratória e a modelagem preditiva subsequente, permitindo uma compreensão detalhada dos padrões de uso e comportamento dos usuários do sistema +BIKE.
