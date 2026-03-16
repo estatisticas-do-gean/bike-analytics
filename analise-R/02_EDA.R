@@ -134,7 +134,6 @@ df_rides <- df_rides %>%
     hora_inicio_sin = sin(2 * pi * hora_inicio / 24),
     hora_inicio_cos = cos(2 * pi * hora_inicio / 24)
   )
-message("✅ Processamento concluído. Dimensões finais: ", nrow(df_rides), " linhas e" , ncol(df_rides), " colunas.")
 
 # FILTROS DE SANIDADE E SUMÁRIOS --------------------------------------------
 
@@ -149,6 +148,8 @@ summary_age <- df_rides %>%
 # Filtro de Sanidade Biológica
 df_rides <- df_rides %>%
   filter(user_age >= 8 & user_age <= 90)
+
+message("✅ Processamento concluído. Dimensões finais: ", nrow(df_rides), " linhas e " , ncol(df_rides), " colunas.")
 
 # Verificação de Atrasos
 table_late <- df_rides %>%
@@ -1170,10 +1171,11 @@ ggplot(df_fluxo_atraso, aes(x = saldo_fluxo, y = taxa_atraso)) +
   scale_y_continuous(labels = scales::percent) +
   labs(
     title = "Desequilíbrio de Fluxo × Taxa de Atraso",
-    subtitle = "Estações que acumulam bikes (Saldo Positivo) apresentam mais atraso",
+    
     x = "Saldo de Fluxo (Entradas − Saídas)",
     y = "% de Atrasos"
   ) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
   theme_minimal()
 
 # Acúmulo horário e atraso por estação
@@ -1193,6 +1195,7 @@ df_rides %>%
     y = "% de Atrasos"
   ) +
   theme_minimal()
+
 
 # ==============================================================================
 # 6.5 EXPOSIÇÃO AO RISCO E IMPACTO HUMANO
