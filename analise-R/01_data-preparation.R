@@ -31,7 +31,7 @@ set.seed(1234)
 if (!requireNamespace("here", quietly = TRUE)) install.packages("here")
 library(here)
 
-# now your root is dynamic and portable
+# raiz dinâmica e portátil.
 root_dir <- here()
 message("Diretório raiz reconhecido: ", root_dir)
 
@@ -41,7 +41,7 @@ dir_data <- here("arquivos")
 
 # ------------ Gestão de pacotes --------------------
 required_pkgs <- c(
-  "tidyverse", "skimr", "DataExplorer",
+  "tidyverse", "skimr", "DataExplorer", "ggplot2",
   "textclean", "stringi", "forcats", "lubridate", "janitor", "forcats"
 )
 
@@ -190,7 +190,7 @@ rm(dup_codes, dup_names)
 
 message("\n📊 Visão geral da base de viagens:")
 
-summary(df_rides_clean)
+#summary(df_rides_clean)
 skim(df_rides_clean)
 
 # Colunas com mais NA
@@ -205,9 +205,24 @@ print(na_rank, n = 20)
 # Visualização de Ausência
 plot_missing(
   df_rides_clean,
-  group = list(Good = 0.05, OK = 0.40, Bad = 0.70)
-)
-rm(na_rank)
+  group = list(Good = 0.05, OK = 0.40, Bad = 0.70),
+  # Argumentos nativos da função
+  title = "Mapeamento de Dados Ausentes (NAs)",
+  ggtheme = theme_minimal(base_size = 12) 
+) +
+  # Camadas adicionadas para traduzir e embelezar
+  labs(
+    x = "Variáveis do Conjunto de Dados",
+    y = "% de Linhas com Ausência"
+  ) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    legend.position = "bottom",
+    # Gira o texto do eixo X 
+    axis.text.x = element_text(angle = 45, hjust = 1, face = "bold") 
+  )
+
+#rm(na_rank)
 
 ###############################################################
 # 5. INTEGRIDADE RELACIONAL – ESTAÇÕES ÓRFÃS
@@ -243,7 +258,7 @@ message("Integridade relacional restabelecida com sucesso.")
 
 
 ###############################################################
-# 6. AUDITORIA BIOLÓGICA – DATAS DE NASCIMENTO (VERSÃO CORRIGIDA)
+# 6. AUDITORIA BIOLÓGICA – DATAS DE NASCIMENTO 
 ###############################################################
 # Correção aplicada:
 # - user_birthdate agora é parseado com fallback automático via parse_date_time()
@@ -370,7 +385,7 @@ message("\n🧹 Registros removidos por impossibilidade biológica: ", n_invalid
 
 
 # Remove objetos específicos
-rm(df_audit, MIN_AGE, MAX_AGE, CUTOFF_DATE, audit_report)
+#rm(df_audit, MIN_AGE, MAX_AGE, CUTOFF_DATE, audit_report)
 
 ###############################################################
 # 7. ANÁLISE DE PARSING E DADOS CRÍTICOS AUSENTES – TIME_START / TIME_END
@@ -630,7 +645,6 @@ print(qa_late_check)
 # indica que o recálculo da regra foi aplicado corretamente em todos os casos recuperados.
 
 #  Amostra para auditoria manual: 5 casos por método de correção
-
 audit_samples <- df_rides_clean %>%
   group_by(correction_method) %>%
   sample_n(size = pmin(5, n()), replace = FALSE) %>%
@@ -652,7 +666,7 @@ df_rides_clean %>%
 #isso confirma 100% que os 56 casos “unresolved” são REALMENTE irrecuperáveis e que o algoritmo está funcionando exatamente como deveria.
 # ☆ unresolved ✔ Portanto, corretamente marcado como “unresolved”.
 
-rm(na_summary, overlap_nas, qa_counts, qa_duration_stats, qa_late_check, audit_samples, group_b_issues, group_b_summary)
+#rm(na_summary, overlap_nas, qa_counts, qa_duration_stats, qa_late_check, audit_samples, group_b_issues, group_b_summary)
 
 # ---------------------------------------------------------------
 # 9. INVESTIGAÇÃO DE AUSÊNCIA MASSIVA NOS DADOS DEMOGRÁFICOS
@@ -740,9 +754,6 @@ sample_unique_res <- df_rides_clean %>%
 View(sample_unique_res)
 
 #*****
-#*
-#*
-
 
 # ---------------------------------------------------------------
 # 10. TRATAMENTO E PADRONIZAÇÃO DA VARIÁVEL user_residence

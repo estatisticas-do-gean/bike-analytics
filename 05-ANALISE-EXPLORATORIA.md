@@ -1,447 +1,159 @@
-# 📊 Pipeline de Análise Exploratória – Sistema +BIKE
+# Análise Exploratória – Sistema +BIKE
 
-A etapa de **Análise Exploratória de Dados (Exploratory Data Analysis – EDA)** tem como objetivo investigar, compreender e contextualizar os dados operacionais do sistema +BIKE antes da construção de modelos preditivos.
+A etapa de **Análise Exploratória de Dados (*Exploratory Data Analysis – EDA*)** tem como objetivo investigar, compreender e contextualizar os dados operacionais do sistema +BIKE antes da construção de modelos preditivos.
 
-EDA **não é apenas produzir gráficos ou estatísticas descritivas**.
+A EDA é um processo investigativo e indutivo: em vez de impor premissas ao sistema, deixamos que a estrutura interna dos dados revele os reais padrões de comportamento urbano, as anomalias da rede e as forças ocultas que movem o ecossistema +BIKE.
 
-Trata-se de um processo investigativo destinado a compreender:
+Aqui o interesse é copreender **como o sistema funciona na prática**, e não apenas como ele foi projetado para funcionar. O objetivo é explorar perfil demográfico dos usuários; padrões temporais de uso (hora do dia, dia da semana e sazonalidade); dinâmica de fluxo entre estações (origem–destino); presença de desequilíbrios operacionais na rede; indícios de gargalos físicos ou comportamentais. Essas análises permitirão reconstruir **a lógica real de uso do sistema**.
 
-- a **estrutura interna dos dados**;
-- os **padrões temporais de uso do sistema**;
-- possíveis **desequilíbrios operacionais**;
-- **anomalias ou inconsistências relevantes**;
-- relações **estatísticas plausíveis entre variáveis**;
-- hipóteses que expliquem o comportamento observado.
-
-Em termos metodológicos:
-
-- **EDA é um processo indutivo**, orientado à descoberta de padrões.
-- **Modelagem estatística é dedutiva**, orientada à formalização dessas hipóteses.
-
-Assim, a EDA funciona como uma **ponte entre os dados brutos e a modelagem preditiva**.
-
-> **EDA → compreensão do sistema → formulação de hipóteses → modelagem**
-
----
-
-# 🎯 Objetivos da Análise Exploratória
-
-Com os dados previamente limpos e validados nas etapas anteriores, a EDA foi conduzida com dois objetivos centrais.
-
-## 1. Diagnóstico do comportamento do sistema
-
-Esta etapa busca compreender **como o sistema +BIKE é utilizado na prática**, investigando:
-
-- perfil demográfico dos usuários;
-- padrões temporais de uso (hora do dia, dia da semana e sazonalidade);
-- dinâmica de fluxo entre estações (origem–destino);
-- presença de desequilíbrios operacionais na rede;
-- indícios de gargalos físicos ou comportamentais.
-
-Essas análises permitem reconstruir **a lógica real de uso do sistema**.
-
----
-
-## 2. Preparação para a modelagem preditiva
-
-O segundo objetivo da EDA é estruturar o problema analítico que será tratado na etapa de modelagem.
-
-O foco central do projeto é compreender e prever **viagens que excedem o limite operacional de 60 minutos**.
-
-Assim, a EDA busca:
-
-- formalizar a variável **`ride_late`** como indicador binário de atraso;
-- investigar fatores associados ao aumento de risco;
-- identificar variáveis explicativas disponíveis **no momento da retirada da bicicleta**;
-- estabelecer uma linha de base para a modelagem.
-
-Esse processo permitirá posteriormente estimar:
+Outro objetivo é estruturar o problema analítico que será tratado na etapa de modelagem. A exploração não é um fim em si mesma; ela é o laboratório de extração de *features* para a fase de *Machine Learning*. O problema central de negócio a ser resolvido é o esgotamento da frota por uso indevido (viagens acima do limite operacional de 60 minutos). Esse processo permitirá posteriormente estimar:
 
 $$
 P(Atraso=1∣X)P(\text{Atraso} = 1 \mid X)
 $$
 
-em que $X$ representa o conjunto de informações observáveis **antes da viagem ocorrer**.
+em que $X$ representa estritamente o conjunto de informações observáveis conhecidos pelo sistema antes da bicicleta ser destravada (prevenção de vazamento de dados / *data leakage*).
 
----
+Para garantir uma narrativa fluida, orientada a dados e imune a vieses cognitivos, a exploração segue quatro dimensões progressivas:
 
-# 🧭 Metodologia de Exploração
+1.  Dimensão Univariada: Dissecação isolada de cada variável para compreensão de densidade, assimetria e comportamento de cauda (eventos extremos validados).
 
-A análise exploratória foi estruturada em quatro blocos principais:
+2.  Dimensão Bivariada (Interações): O cruzamento de dimensões para revelar causalidades ocultas (ex: a taxa de atraso varia significativamente se a viagem começa em um parque aos domingos?).
 
-1. **Análise univariada**
-    
-    investigação das distribuições individuais das variáveis.
-    
-2. **Análise bivariada**
-    
-    exploração de relações entre variáveis relevantes.
-    
-3. **Visualização exploratória**
-    
-    uso de gráficos para revelar padrões não evidentes em tabelas.
-    
-4. **Análise temporal e de rede**
-    
-    investigação da dinâmica do sistema ao longo do tempo e do espaço.
-    
+3.  Visualização Estratégica: Aplicação de heurísticas visuais (heatmaps, distribuições e grafos de rede) para sintetizar padrões multidimensionais que passariam despercebidos em matrizes numéricas.
 
-Durante todo o processo foi mantida uma separação clara entre:
+4.  Criação de *Features* (*Feature Engineering*): A tradução de hipóteses levantadas visualmente em novas variáveis matemáticas que alimentarão os algoritmos de classificação.
 
-- **Fundamentação analítica** – validação estrutural dos dados
-- **Exploração estatística** – identificação de padrões e hipóteses
-- **Modelagem** – etapa posterior de formalização preditiva
-- **Narrativa analítica** – tradução dos resultados em insights acionáveis
+Cada achado desta fase não é tratado como uma mera curiosidade, mas como um bloco fundamental na construção de heurísticas operacionais e modelos de decisão baseados em dados.
 
----
+------------------------------------------------------------------------
 
-# 1️⃣ Integridade Analítica e Natureza dos Missing
+## O quem
 
-Antes da exploração estatística propriamente dita, foi necessário compreender a **natureza das ausências presentes na base de dados**.
+A primeira dimensão da Análise Exploratória busca responder uma pergunta fundamental: Quem é o agente causal que opera o sistema +BIKE?
 
-Nem todo valor ausente representa erro de coleta. Em sistemas operacionais complexos, valores ausentes podem refletir **limitações do processo de registro ou características do próprio sistema**.
+A demografia não é apenas um retrato sociológico; em um sistema físico com limitações de tempo e desgaste mecânico, a idade, a localização e a familiaridade do usuário com a plataforma ditam a dinâmica de fluxo e o risco de falhas contratuais (os atrasos operacionais acima de 60 minutos).
 
-A primeira etapa da EDA consistiu, portanto, em classificar os diferentes tipos de *missing values*.
+Para transcender os dados brutos, submetemos as matrizes de data e localidade a uma camada de extração de características, traduzindo informações brutas em variáveis orientadas à hipótese e à modelagem preditiva:
 
-```r
-# Remoção de registros estruturalmente inválidos
-df_rides<-df_rides%>%
-filter(!(!is.na(datetime_end)&is.na(ride_duration)&is.na(ride_late) ))
-```
+- A Continuidade e a Categoria (Idade): A idade foi calculada de forma exata (`user_age`) para garantir o traçado contínuo das distribuições paramétricas (média, desvio padrão). Simultaneamente, criamos agrupamentos provisórios discretos (`user_age_group_exp`) para facilitar a identificação de blocos comportamentais (ex: 18-24 anos vs. 55-64 anos).
 
-Essa operação remove um pequeno subconjunto de registros inconsistentes, nos quais o horário de término está presente, mas a duração da viagem e o indicador de atraso não foram calculados.
+- O Ciclo do Tempo (Horas): Horários foram decompostos em funções trigonométricas contínuas (seno e cosseno, via `hora_inicio_sin`), respeitando a topologia cíclica do tempo em modelos matemáticos — onde as 23:00 estão espacialmente próximas às 01:00.
 
----
+- A Familiaridade (Geografia): A localidade do usuário deixou de ser uma mera *string* ("BRASILIA (DF)") para tornar-se uma hipótese binária de familiaridade geográfica: o usuário pertence ao ecossistema local (`is_local_df = TRUE`) ou é um ator esporádico (turistas/forasteiros)?
 
-## Tipologia de Missing Identificada
+O mapeamento demográfico provou também que o sistema opera sob forte viés de idade economicamente ativa. A base, agora livre de anomalias (nascimentos irreais expurgados da Fase 1), consolidou 278.779 viagens válidas.
 
-| Variável | Tipo de ausência | Natureza |
-| --- | --- | --- |
-| `datetime_end` | Falha operacional | MNAR sistêmico |
-| `ride_duration` | Variável derivada | Dependente |
-| `ride_late` | Variável derivada | Dependente |
-| `user_gender` | Cadastro incompleto | MNAR estrutural |
+### Idades
 
----
+As idades dos usuários revelou um ecossistema jovem-adulto:
 
-## 🕒 Caso Crítico: `datetime_end`
+![box-plot-idades](image/05-ANALISE-EXPLORATORIA/box-plot-idades.png)
 
-Cerca de **15% das viagens apresentam ausência do timestamp de encerramento**, apesar de a devolução da bicicleta ter sido registrada.
+- Média: 28,6 anos.
 
-Isso indica que o evento físico ocorreu, mas o sistema não conseguiu registrar o horário exato.
+- Mediana: 25 anos.
 
-Esses registros são:
+- Intervalo Interquartil (IQR): 50% de todas as viagens ocorrem entre os 21 e 34 anos de idade.
 
-- **espacialmente válidos** (sabemos origem e destino)
-- **temporalmente inválidos** (não sabemos a duração exata)
+> A média (28,6) puxa para a direita em relação à mediana (25). Isso indica a existência de usuários mais velhos que, embora sejam numericamente inferiores (uma "cauda longa" de usuários entre 45 e 65 anos), exercem impacto estrutural na variância geral do sistema. A participação de idosos (\> 65 anos) é sub-representada, o que expõe uma barreira natural de adoção (física ou tecnológica).
 
-### Interpretação operacional
+A etapa mais valiosa da análise univariada e bivariada é cruzar os atributos descritivos com o nosso alvo de negócio: a infração da regra de 60 minutos (`ride_late`).
 
-Esse comportamento é consistente com falhas de sincronização entre a estação física e o sistema central.
+Ao confrontar as Faixas Etárias com a Taxa de Atraso Média do Sistema (aprox. 9,9%), descobrimos que o risco operacional não obedece a uma distribuição linear ou homogênea.
 
-Possíveis explicações incluem:
+![atraso por faixa etária](image/05-ANALISE-EXPLORATORIA/atraso-por-faixa-etaria.png)
 
-- travamento imperfeito do *dock*;
-- validação posterior do evento de devolução;
-- registro tardio sem recuperação do timestamp original.
+> O Risco da Juventude (08–17 anos): Este grupo apresentou a segunda maior taxa relativa de viagens atrasadas. A hipótese central é o comportamento exploratório/lazer. O sistema deixa de ser um modal utilitário (A -\> B) e passa a ser uma plataforma de diversão prolongada, não raras vezes associada a passeios em grupo ou distrações operacionais. O Vale da Produtividade (25-44 anos): O público jovem-adulto apresentou as taxas de atraso sistematicamente abaixo da média geral. Para esse bloco, o sistema é estritamente utilitário (*commuting*). Há previsibilidade temporal e aderência estrita às regras do jogo. O Risco da Idade Avançada (55-64 anos e 65-90 anos): A cauda longa do sistema dispara alarmes de risco. Conforme a idade avança, a duração mediana das viagens sobe acentuadamente, elevando o risco de infração. Aqui, não se presume o uso de lazer exploratório, mas sim uma redução natural da velocidade mecânica de deslocamento, transformando trajetos que seriam curtos para jovens em viagens limítrofes (próximas aos 60 minutos) para idosos.
 
----
+O usuário médio do +BIKE é um adulto do Distrito Federal, entre 21 e 34 anos, engajado em micromobilidade de alta previsibilidade.
 
-## Decisão metodológica
+Contudo, para o modelo preditivo, a idade desponta como um moderador não-linear crítico. A propensão ao atraso dispara nas caudas da distribuição etária, confirmando que a idade biológica será um *feature* poderoso para o classificador (Fase 3), separando viagens utilitárias velozes de deslocamentos exploratórios prolongados (jovens) ou fisicamente restritos (idosos).
 
-A presença dessas observações exige tratamento diferenciado.
+### Gênero
 
-Para análises de:
+Aprofundando a dimensão demográfica, investigamos a variável `user_gender`. Na análise de mobilidade urbana, o gênero transcende a mera demografia; ele atua como um *proxy* poderoso para a percepção de segurança da infraestrutura, padrões de deslocamento de cuidado (*mobility of care*) e velocidade média de trânsito físico.
 
-**Fluxo e rede**
+Os dados brutos revelaram uma forte assimetria na adoção do modal: 74% das viagens são realizadas por homens (175.102 registros) contra 26% por mulheres (61.165 registros). Esta predominância massiva sugere a existência de fricções sistêmicas (sejam elas infraestruturais, de segurança viária ou culturais) que limitam o alcance do serviço no público feminino.
 
-→ as observações são mantidas, pois preservam informação espacial.
+No entanto, o cruzamento do gênero com variáveis de rotina revelou uma descoberta contraintuitiva:
 
-**Duração e atraso**
+- As curvas de densidade de uso ao longo das 24 horas são virtualmente idênticas para ambos os sexos. Não existe uma "barreira de horário" exclusiva para mulheres. Os picos de *commuting* ocorrem exatamente nos mesmos momentos.
 
-→ as observações são removidas, pois introduziriam viés temporal.
+- A distribuição estrutural das idades é um espelho entre os gêneros. A diferença reside unicamente no volume de adoção (escala), não na forma da distribuição.
 
-Essa abordagem permite **preservar informação útil sem comprometer a validade estatística das análises temporais**.
-
----
-
-## Caso residual: registros inconsistentes
-
-Foi identificado um subconjunto de **56 observações estruturalmente inconsistentes**, nas quais:
-
-- `datetime_end` estava presente
-- `ride_duration` e `ride_late` estavam ausentes
-
-Esse grupo representa **menos de 0,03% da base de dados** e foi removido por violar regras fundamentais de integridade.
-
----
-
-
-# 2️⃣ Engenharia de Features
-
-Para que a análise exploratória fosse capaz de revelar padrões comportamentais relevantes, foi necessário traduzir os registros operacionais em **variáveis analíticas interpretáveis**.
-
-As novas features foram construídas em três dimensões principais:
-
-### Dimensão demográfica
-
-A idade do usuário foi calculada a partir da diferença entre a data de nascimento e a data da viagem.
-
-Além da versão contínua, foram criados agrupamentos etários para explorar possíveis **efeitos não lineares no risco de atraso**.
-
----
-
-### Dimensão geográfica
-
-A variável de residência foi reinterpretada para capturar o conceito de **familiaridade com a cidade**.
-
-Foram definidos três grupos:
-
-- **Locais (DF)**
-- **Não informado**
-- **Outros / turistas**
-
-Essa classificação permite investigar se usuários menos familiarizados com o sistema apresentam comportamentos distintos.
-
----
-
-### Dimensão temporal
-
-O horário de início da viagem foi transformado em componentes trigonométricos (*seno* e *cosseno*), permitindo capturar a **natureza cíclica do tempo**.
-
-Esse tipo de transformação evita a descontinuidade artificial entre 23h e 00h em modelos estatísticos.
-
-```r
-df_rides <- df_rides %>%
-  mutate(
-    # --------------------------------------------------------------------------
-    # IDADE — manter sinal contínuo e permitir não-linearidade
-    # --------------------------------------------------------------------------
-    
-    # Idade contínua (variável principal)
-    user_age = as.integer(interval(user_birthdate, ride_date) / years(1)),
-    
-    # Versão normalizada (útil para modelos e comparações)
-    user_age_scaled = as.numeric(scale(user_age)),
-    
-    # Buckets PROVISÓRIOS (exploratórios, não definitivos)
-    # Corrigido para usar a função cut() mantendo suas faixas originais
-    user_age_group_exp = cut(
-      user_age,
-      breaks = c(8, 18, 25, 35, 45, 55, 65, 91),
-      labels = c("08–17", "18–24", "25–34", "35–44", "45–54", "55–64", "65–90"),
-      right  = FALSE
-    ),
-    
-    # --------------------------------------------------------------------------
-    # GEOGRAFIA — separar informação, familiaridade e localidade
-    # --------------------------------------------------------------------------
-    
-    # Flag simples: residência informada?
-    has_residence_info = user_residence != "NAO INFORMADO",
-    
-    # Cluster geográfico conceitual (hipótese de familiaridade)
-    geo_cluster = case_when(
-      user_residence == "BRASILIA (DF)" ~ "Local (DF)",
-      user_residence == "NAO INFORMADO" ~ "Não Informado",
-      TRUE                              ~ "Outros / Turistas"
-    ),
-    
-    # Versão binária útil para modelos
-    is_local_df = user_residence == "BRASILIA (DF)",
-    
-    # --------------------------------------------------------------------------
-    # TEMPO — tratar hora como fenômeno cíclico
-    # --------------------------------------------------------------------------
-    
-    # Hora simples (EDA, gráficos, tabelas)
-    hora_inicio = hour(datetime_start),
-    
-# Componentes cíclicos (modelagem futura)
-    hora_inicio_sin = sin(2 * pi * hora_inicio / 24),
-    hora_inicio_cos = cos(2 * pi * hora_inicio / 24)
-  )
-message("✅ Processamento concluído. Dimensões finais: ", nrow(df_rides), " linhas e" , ncol(df_rides), " colunas.")
-```
-
-Essas transformações criam uma base analítica mais adequada para exploração estatística e modelagem posterior.
-
----
-
-# 3️⃣ Análise do Perfil do Usuário (O “Quem”)
-
-Uma das primeiras perguntas da análise exploratória foi compreender **quem utiliza o sistema +BIKE**.
-
-A caracterização do perfil demográfico dos usuários permite identificar padrões de comportamento e possíveis vulnerabilidades operacionais associadas a determinados grupos.
-
-A análise foi conduzida utilizando estatísticas descritivas e comparações bivariadas entre as variáveis demográficas e o indicador de atraso (`ride_late`).
-
----
-
-## Distribuição Etária
-
-A distribuição de idade dos usuários revela que o sistema é utilizado predominantemente por **adultos jovens**, com forte concentração nas faixas:
-
-- **25–34 anos**
-- **35–44 anos**
-
-Esse padrão é consistente com sistemas de bicicletas compartilhadas em grandes centros urbanos, onde o uso tende a ser mais frequente entre indivíduos em idade economicamente ativa, especialmente para deslocamentos cotidianos.
-
-A participação de usuários acima de **60 anos é relativamente pequena**, o que sugere menor adoção do sistema por esse grupo etário. No entanto, mesmo com baixa representatividade, esses usuários apresentam **maior exposição ao risco de atraso**, o que torna esse segmento relevante do ponto de vista operacional.
-
-A análise detalhada por faixa etária revelou um padrão importante:
-
-o risco de atraso não é homogêneo ao longo da distribuição de idade.
-
-Usuários nos **extremos da distribuição etária** apresentam comportamentos distintos:
-
-- Jovens entre **08–17 anos**
-- Adultos mais velhos entre **55–64 anos**
-
-Esses grupos apresentam **taxas de atraso sistematicamente maiores**, podendo ultrapassar **20% em alguns intervalos**, sugerindo possíveis diferenças no padrão de uso, na experiência com o sistema ou na velocidade média de deslocamento.
-
-![1772660540005](image/05-ANALISE-EXPLORATORIA/1772660540005.png)
-
-
-![1772660751639](image/05-ANALISE-EXPLORATORIA/1772660751639.png)
-
-Esse resultado indica que idade atua como um moderador relevante do risco operacional e, portanto, deve ser considerada na etapa de modelagem preditiva.
-
----
-
-## 🚺 Gênero como Proxy de Infraestrutura
-
-A análise do perfil por gênero revelou uma **forte predominância masculina no uso do sistema**.
-
-Aproximadamente **74% das viagens registradas foram realizadas por homens**, enquanto as mulheres representam cerca de **26% do total de usuários**.
-
-![1772660801894](image/05-ANALISE-EXPLORATORIA/1772660801894.png)
-
-Em estudos de mobilidade urbana, essa proporção é frequentemente utilizada como um **indicador indireto (*proxy*) da qualidade e segurança da infraestrutura cicloviária**.
+Se a rotina temporal é semelhante, o comportamento mecânico da viagem não é. A análise de duração (isolando viagens \< 60 min para remover ruídos extremos) demonstrou que as mulheres realizam trajetos sistematicamente mais longos.
 
 Em cidades com redes cicloviárias consolidadas e infraestrutura segura, a participação feminina tende a se aproximar da paridade, frequentemente atingindo proporções próximas de **50/50**.
 
 Quando há forte predominância masculina, isso pode refletir:
 
-- **maior percepção de risco no trânsito urbano**;
-- **infraestrutura cicloviária insuficiente ou pouco conectada**;
-- uso predominantemente **utilitário** do sistema, em vez de recreativo.
+- maior percepção de risco no trânsito urbano;
+- infraestrutura cicloviária insuficiente ou pouco conectada;
+- uso predominantemente utilitário do sistema, em vez de recreativo.
 
 No contexto do sistema +BIKE, a análise bivariada revelou ainda que **mulheres tendem a realizar viagens ligeiramente mais longas** e apresentam **taxa média de atraso superior à dos homens**.
 
-![1772660882624](image/05-ANALISE-EXPLORATORIA/1772660882624.png)
+Por estas razões, o gênero emerge como uma variável de interesse para a modelagem preditiva, não apenas como um marcador demográfico, mas como um indicador indireto da qualidade da infraestrutura cicloviária e do risco operacional.
 
-Esse padrão pode estar associado a diferenças de comportamento de uso, escolha de rotas ou maior sensibilidade a problemas operacionais da rede.
+O perfil de menor risco para o ecossistema é o homem de 25 a 34 anos. O perfil de maior risco (que exige calibração preditiva urgente) divide-se nos extremos: jovens em viés exploratório e mulheres em faixas etárias mais avançadas.
 
----
+### Geografia
 
-### Síntese demográfica:
+![nao-informado](image/05-ANALISE-EXPLORATORIA/nao-informado.png)
 
-A análise do perfil demográfico revela que o risco de atraso **não está distribuído uniformemente entre os usuários**.
+Um dos maiores desafios da análise geográfica foi lidar com a variável **residência do usuário. O que esse vazio significa?**
 
-Tanto **idade** quanto **gênero** segmentam padrões distintos de utilização do sistema.
+Na análise de mobilidade urbana, a origem geográfica do usuário dita o seu engajamento com o sistema: ele é um residente inserido em uma rotina previsível ou um visitante em modo exploratório?
 
-Essas variáveis capturam diferenças importantes no comportamento de uso e na forma como os usuários interagem com as limitações operacionais da rede.
+Ao investigar a variável de residência, o projeto deparou-se com um desafio clássico de engenharia de dados: 63,9% da base estava ausente, na fase anterior foi rotulada como "NAO INFORMADO".
 
-Do ponto de vista analítico, isso implica que essas variáveis **não devem ser ignoradas na modelagem preditiva**, pois ajudam a explicar parte da heterogeneidade observada no risco de atraso.
+Sob a ótica dos Primeiros Princípios, a ausência massiva de dados em formulários de cadastro raramente é um ruído estocástico (*Missing Completely at Random* - MCAR). Na maioria das vezes, é um artefato de *User Experience (UX)*: usuários pulando etapas não obrigatórias de um aplicativo para acelerar o primeiro uso. O objetivo da EDA foi interrogar esse vazio, agrupando a base em três *clusters* geográficos e comparando suas assinaturas comportamentais:
 
-Em outras palavras, **idade e gênero funcionam como moderadores do risco operacional**, refletindo diferentes níveis de vulnerabilidade dos usuários diante de falhas ou gargalos do sistema.
+1.  Locais (DF)
 
----
+2.  Não Informado
 
-# 4️⃣ Geografia e a Descoberta da “Familiaridade”
+3.  Outros / Turistas
 
-Um dos maiores desafios da análise geográfica foi lidar com a variável **residência do usuário**.
+![cluster-geografico](image/05-ANALISE-EXPLORATORIA/cluster-geografico.png)
 
-A base apresenta um volume extremamente elevado de registros classificados como **“NAO INFORMADO”**, representando aproximadamente **63,9% dos usuários**. Em um primeiro momento, isso poderia ser interpretado como um *missing* problemático, potencialmente limitando qualquer análise baseada em origem geográfica.
+Para determinar a verdadeira natureza do grupo "Não Informado", os três *clusters* foram submetidos a uma bateria de testes comportamentais que espelham a física e a rotina do sistema.
 
-![1772660975385](image/05-ANALISE-EXPLORATORIA/1772660975385.png)
+1.  Ao analisar a distribuição do tempo de viagem, os grupos revelaram suas verdadeiras naturezas logísticas.
 
-Entretanto, a EDA foi conduzida justamente para testar se esse grupo realmente representava **informação ausente aleatória** ou se havia algum **padrão comportamental escondido nessa categoria**.
+    - Locais e "Não Informados": Apresentaram medianas idênticas, travadas em aproximadamente 12 minutos, com baixíssima dispersão. Esta é a assinatura mecânica do uso utilitário e recorrente.
 
-Para investigar essa hipótese, os usuários foram agrupados em três clusters geográficos:
+    - Outros / Turistas: Apresentaram viagens estruturalmente mais longas e com caudas pesadas, refletindo um comportamento de lazer, navegação desconhecida ou turismo.
 
-- **Locais (DF)** – residência registrada em Brasília
-- **Não Informado** – usuários sem informação de residência
-- **Outros / Turistas** – usuários registrados em outras cidades ou estados
+2.  Se o grupo "Não Informado" fosse composto por turistas aleatórios, sua distribuição ao longo do dia seria difusa. Contudo, a curva horária revelou uma sobreposição perfeita com os Locais do DF. Ambos os grupos (Locais e Não Informados) exibem picos bimodais acentuados no início da manhã e no final da tarde — a prova incontestável de deslocamento pendular diário (commuting). O grupo "Outros / Turistas", por sua vez, apresentou uma curva unimodal, com forte concentração à tarde, típica de atividades recreativas.
 
-![1772661012192](image/05-ANALISE-EXPLORATORIA/1772661012192.png)
+3.  A taxa de atraso ao longo do dia reforçou a hipótese de que o grupo "Não Informado" é, na verdade, composto por usuários locais. Ambos os grupos (Locais e Não Informados) apresentaram taxas de atraso muito semelhantes (Risco base estabilizado em torno de 8,9%), enquanto o grupo "Outros / Turistas" exibiu taxas significativamente mais altas (Elevação do risco para 12,5%), refletindo viagens mais longas e menos previsíveis.
 
-A análise comparativa entre esses grupos revelou um resultado inesperado e extremamente informativo.
+A evidência empírica é irrefutável: a categoria "NAO INFORMADO" é o espelho estatístico da categoria "Locais (DF)".
 
----
+O grupo não representa visitantes ocultos, mas sim residentes locais habituais que optaram por fricção zero no momento do cadastro. Se o modelo tratasse esses 63,9% de usuários como dados perdidos, perderíamos a capacidade de mapear a rotina utilitária da cidade.
 
-## Evidência 1 — Padrão de Duração
+================================================================================
 
-A primeira comparação analisou a **distribuição da duração das viagens** entre os grupos.
+MATRIZ DE DENSIDADE (FAIXA ETÁRIA x CLUSTER GEOGRÁFICO) ================================================================================
 
-![1772661063320](image/05-ANALISE-EXPLORATORIA/1772661063320.png)
+Faixa Etária \| Local (DF) \| Não Informado \| Outros / Turistas
 
-O resultado mostrou que as medianas de duração dos grupos “Locais (DF)” e “Não Informado” são praticamente idênticas, situando-se em torno de 12 minutos, com baixa dispersão.
+--------------------------------------------------------------------------------
 
-Esse padrão sugere que ambos os grupos apresentam **comportamento de deslocamento semelhante**, típico de trajetos curtos e funcionais.
+08–17 anos \| Baixa \| Média \| Baixa\
+18–24 anos \| Média \| MÁXIMA CRÍTICA \| Média\
+25–34 anos \| Alta \| Alta \| Média\
+35–54 anos \| Alta \| Média \| Baixa\
+55+ anos \| Média \| Baixa \| Baixa\
+================================================================================
 
-Em contraste, o grupo **“Outros / Turistas”** apresenta viagens mais longas, indicando um uso mais associado a lazer ou desinforma.
+> A matriz de densidade térmica (Heatmap: Idade vs Residência) forneceu a resposta. O grupo "Não Informado" é massivamente composto por jovens entre 18 e 24 anos. Em contrapartida, usuários acima de 35 anos apresentam uma propensão significativamente maior a completar os formulários de registro.A Hipótese de UX: A ausência da residência não é uma falha técnica do banco de dados, mas um comportamento geracional. A fricção do cadastro é rejeitada pelos usuários mais jovens em busca de acesso imediato ao serviço, enquanto usuários mais maduros toleram o processo burocrático de registro.
 
-## Evidência 2 — Curva Horária de Uso
+Em vez de descartar os dados, a modelagem preditiva aplicará uma redução de dimensionalidade inteligente. O ruído cadastral será eliminado fundindo os *clusters* de comportamento idêntico. Utilizar a *feature* binária `is_local_df`, onde "Locais" e "Não Informados" formam a classe majoritária de baixo risco, enquanto "Outros / Turistas" serão isolados como o grupo minoritário de alto risco. Isso preserva 100% da informação relevante do *dataset* e entrega um sinal limpo e forte para os algoritmos de classificação.
 
-A segunda análise investigou a **distribuição horária das viagens**.
-
-![1772661253791](image/05-ANALISE-EXPLORATORIA/1772661253791.png)
-
-Novamente, os grupos **“Locais (DF)”** e **“Não Informado”** apresentaram comportamento praticamente idêntico.
-
-Ambos exibem **picos de uso claros nos horários de deslocamento pendular**, especialmente:
-
-- início da manhã
-- final da tarde
-
-Esse padrão é característico de **uso para mobilidade cotidiana (commuting)**.
-
-<!-- ![1772661364731](image/05-ANALISE-EXPLORATORIA/1772661364731.png) -->
-
-![1772661317412](image/05-ANALISE-EXPLORATORIA/1772661317412.png)
-
-Por outro lado, o grupo “Outros / Turistas” apresenta um padrão distinto, com maior concentração de viagens no período da tarde, indicando um uso mais associado a atividades recreativas.
-
-## Evidência 3 — Curva de Risco de Atraso
-
-A terceira comparação analisou a **taxa de atraso ao longo do dia** para cada cluster geográfico.
-
-![Taxa de atraso por cluster](image/05-ANALISE-EXPLORATORIA/1772661364731.png)
-
-Mais uma vez, os grupos **“Locais (DF)”** e **“Não Informado”** apresentam taxas de atraso muito semelhantes ao longo de todo o dia.
-
-Em contraste, o grupo **“Outros / Turistas”** apresenta:
-
-- maior duração média de viagem
-- maior dispersão temporal de uso
-- **taxa de atraso consistentemente mais elevada**
-
-Enquanto os usuários locais apresentam risco médio de atraso próximo de **8,9%**, o grupo de turistas apresenta valores próximos de **12,5%**.
-
----
-
-## Interpretação Analítica: A Variável “Não Informado”
-
-A evidência empírica acumulada indica que a categoria **“NAO INFORMADO” não se comporta como um missing aleatório**.
-
-Na prática, esse grupo apresenta **padrões comportamentais praticamente idênticos aos usuários locais**.
-
-Isso sugere que muitos desses registros correspondem simplesmente a **usuários recorrentes que optaram por não preencher ou completar o cadastro de residência**, e não necessariamente a visitantes ou usuários ocasionais.
-
----
-
-Com base nas evidências observadas na EDA, foi adotada a seguinte estratégia para a modelagem:
-
-- **“Locais (DF)” e “Não Informado”** serão tratados como um mesmo grupo comportamental (usuários locais)
-- **“Outros / Turistas”** serão mantidos como um cluster separado
-
-Essa decisão permite preservar a informação comportamental relevante da variável, evitando tratar um grande volume de observações como ruído estatístico.
-
-Além disso, a análise indica que **usuários visitantes apresentam um perfil de uso mais arriscado**, caracterizado por viagens mais longas e maior probabilidade de atraso, tornando esse grupo particularmente relevante para a modelagem de risco operacional.
-
----
+------------------------------------------------------------------------
 
 # 5️⃣ Padrões Temporais e Sazonalidade
 
@@ -451,7 +163,7 @@ Após analisar o perfil dos usuários e a dimensão geográfica do sistema, a pr
 
 A análise da dimensão temporal revelou que o comportamento do sistema não é homogêneo ao longo da semana. Na prática, o sistema opera sob **duas lógicas principais de uso**, associadas ao contexto em que as viagens ocorrem.
 
----
+------------------------------------------------------------------------
 
 ## Uso Funcional — Dias Úteis
 
@@ -473,7 +185,7 @@ Nesse contexto, as viagens tendem a ser:
 
 Essas características reduzem a probabilidade de desequilíbrios operacionais na rede.
 
----
+------------------------------------------------------------------------
 
 ## Uso Recreativo — Finais de Semana
 
@@ -496,7 +208,7 @@ Esse comportamento sugere um padrão de uso predominantemente **recreativo ou tu
 
 Como consequência, aumenta a probabilidade de **desequilíbrios temporários na rede de estações**, especialmente em áreas com maior concentração de devoluções.
 
----
+------------------------------------------------------------------------
 
 A análise temporal demonstra que o atraso no sistema +BIKE **não ocorre de forma aleatória**.
 
@@ -506,15 +218,13 @@ Ele está **fortemente condicionado ao contexto temporal em que a viagem ocorre*
 - **hora do dia**
 - **tipo de uso predominante (funcional vs recreativo)**
 
-
 Esses resultados indicam que **variáveis temporais desempenham papel fundamental na explicação do risco de atraso**, sendo, portanto, componentes essenciais para a etapa de **modelagem preditiva**.
 
----
+------------------------------------------------------------------------
 
-> **🚦 Síntese Temporal:**
-O atraso não é um ruído estocástico. É um evento previsível, altamente condicionado à janela de tempo (hora/dia) em que a viagem ocorre.
+> **🚦 Síntese Temporal:** O atraso não é um ruído estocástico. É um evento previsível, altamente condicionado à janela de tempo (hora/dia) em que a viagem ocorre.
 
----
+------------------------------------------------------------------------
 
 # 6️⃣ Diagnóstico Causal: Rede, Estações e Gargalos Físicos
 
@@ -528,11 +238,9 @@ A hipótese inicial considerava que viagens longas ou comportamentos individuais
 
 Os resultados indicam que o atraso está **fortemente associado à dinâmica física das estações**, especialmente ao equilíbrio entre retiradas e devoluções ao longo da rede.
 
-![1773696994373](image/05-ANALISE-EXPLORATORIA/1773696994373.png)
----
+## ![1773696994373](image/05-ANALISE-EXPLORATORIA/1773696994373.png)
 
-![1773697005516](image/05-ANALISE-EXPLORATORIA/1773697005516.png)
-----
+## ![1773697005516](image/05-ANALISE-EXPLORATORIA/1773697005516.png)
 
 Essa evidência sugere que o atraso não emerge apenas de decisões individuais do usuário, mas sim de restrições operacionais do próprio sistema.
 
@@ -540,14 +248,13 @@ Essa evidência sugere que o atraso não emerge apenas de decisões individuais 
 
 A análise exploratória permitiu identificar um **mecanismo estrutural recorrente**, que pode ser descrito como uma cadeia de eventos operacionais.
 
-![1773696949295](image/05-ANALISE-EXPLORATORIA/1773696949295.png)
----
+## ![1773696949295](image/05-ANALISE-EXPLORATORIA/1773696949295.png)
 
 1️⃣ **Desequilíbrio de fluxo entre estações**
 
 Algumas estações funcionam predominantemente como **origem**, enquanto outras concentram **devoluções**. Esse desequilíbrio gera acúmulo progressivo de bicicletas em determinados pontos da rede.
 
----
+------------------------------------------------------------------------
 
 2️⃣ **Saturação das docas de destino**
 
@@ -555,8 +262,7 @@ Quando muitas bicicletas chegam simultaneamente a uma estação com capacidade l
 
 Nesse momento, o sistema entra em uma condição de saturação local.
 
-![1773697687252](image/05-ANALISE-EXPLORATORIA/1773697687252.png)
----
+## ![1773697687252](image/05-ANALISE-EXPLORATORIA/1773697687252.png)
 
 3️⃣ **Busca por estação alternativa**
 
@@ -564,21 +270,17 @@ Sem vagas disponíveis na estação planejada, o usuário precisa continuar peda
 
 Esse comportamento aumenta artificialmente o tempo total da viagem.
 
----
+------------------------------------------------------------------------
 
 4️⃣ **Registro do atraso**
 
 Como consequência, o sistema registra um **tempo de viagem superior ao limite operacional**, classificando a corrida como atraso.
 
----
+------------------------------------------------------------------------
 
-![1773697835518](image/05-ANALISE-EXPLORATORIA/1773697835518.png)
----
+## ![1773697835518](image/05-ANALISE-EXPLORATORIA/1773697835518.png)
 
----
-
-
-
+------------------------------------------------------------------------
 
 # 7️⃣ Duração vs. Atraso — Separando Sintoma de Causa
 
@@ -592,7 +294,7 @@ Essa hipótese é intuitiva. Se um usuário permanece mais tempo com a bicicleta
 
 Entretanto, a análise detalhada dos dados revelou uma interpretação diferente.
 
----
+------------------------------------------------------------------------
 
 ### Evidência Empírica
 
@@ -602,7 +304,7 @@ Esse padrão poderia levar à conclusão de que **a duração explica o atraso**
 
 Contudo, a análise operacional da rede — realizada na etapa anterior — indica que essa interpretação seria equivocada.
 
----
+------------------------------------------------------------------------
 
 ### Interpretação Operacional
 
@@ -614,7 +316,7 @@ Nesse cenário, o usuário precisa continuar pedalando até encontrar outra esta
 
 Assim, a duração registrada pelo sistema passa a refletir não apenas o deslocamento, mas também **o tempo imposto pela saturação da rede**.
 
----
+------------------------------------------------------------------------
 
 Essa distinção é fundamental para a interpretação correta do fenômeno.
 
@@ -623,16 +325,15 @@ Essa distinção é fundamental para a interpretação correta do fenômeno.
 
 Em outras palavras, a duração funciona como **um sintoma do problema**, e não como sua causa estrutural.
 
----
+------------------------------------------------------------------------
 
 A EDA demonstra que o atraso no sistema +BIKE **não decorre primariamente de decisões individuais dos usuários**, como pedalar mais devagar ou prolongar voluntariamente a viagem.
 
 Em vez disso, o fenômeno emerge das **restrições físicas e operacionais da rede de estações**, especialmente da indisponibilidade de docas no momento da devolução.
 
-![Atraso por dia útil x fim de semana, perfil geográfico](image/05-ANALISE-EXPLORATORIA/1773698039374.png)
----
+## ![Atraso por dia útil x fim de semana, perfil geográfico](image/05-ANALISE-EXPLORATORIA/1773698039374.png)
 
----
+------------------------------------------------------------------------
 
 # 8️⃣ Linha de Base para Modelagem
 
@@ -656,7 +357,7 @@ Por esse motivo, a avaliação do modelo deverá priorizar métricas mais adequa
 
 Essas métricas permitem avaliar de forma mais robusta a capacidade do modelo em **detectar eventos raros, mas operacionalmente relevantes**.
 
----
+------------------------------------------------------------------------
 
 # 9️⃣ Encerramento da EDA e Transição para Modelagem
 
@@ -676,7 +377,7 @@ Essas evidências permitem formalizar o problema de modelagem como a **estimaç�
 
 Matematicamente, o objetivo do modelo pode ser expresso como:
 
-```latex
+``` latex
 P(Atraso=1∣X)P(\text{Atraso} = 1 \mid X)
 ```
 
@@ -704,6 +405,3 @@ Por fim, vale ressaltar que o código completo utilizado nesta etapa encontra-se
 [EDA Completa](/analise-R/02-EDA.R)
 
 Esse script contém análises adicionais, visualizações e verificações estatísticas que complementam os resultados apresentados neste documento e contribuem para uma compreensão mais profunda do comportamento do sistema +BIKE.
-
----
----

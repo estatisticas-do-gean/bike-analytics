@@ -787,7 +787,6 @@ df_rides %>%
   geom_col(width = 0.6) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_discrete(labels = c("FALSE" = "Dia Útil", "TRUE" = "Fim de Semana")) +
-  scale_fill_manual(values = c("FALSE" = paleta_tempo["Dia Útil"], "TRUE" = paleta_tempo["Fim de Semana"])) +
   labs(
     title = "Risco de Atraso: Dia Útil vs Fim de Semana",
     x = NULL,
@@ -834,10 +833,6 @@ df_rides %>%
   summarise(taxa_atraso = mean(ride_late), .groups = "drop") %>%
   ggplot(aes(x = hora_inicio, y = taxa_atraso, color = is_weekend)) +
   geom_line(linewidth = 0.9) +
-  scale_color_manual(
-    values = c("FALSE" = paleta_tempo["Dia Útil"], "TRUE" = paleta_tempo["Fim de Semana"]),
-    labels = c("Dia Útil", "Fim de Semana")
-  ) +
   scale_y_continuous(labels = scales::percent) +
   scale_x_continuous(breaks = seq(0, 23, 2)) +
   labs(
@@ -902,10 +897,6 @@ df_rides %>%
   ggplot(aes(x = month, y = taxa_atraso, fill = is_weekend)) +
   geom_col(position = "dodge", width = 0.7) +
   scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(
-    values = c("FALSE" = paleta_tempo["Dia Útil"], "TRUE" = paleta_tempo["Fim de Semana"]),
-    labels = c("Dia Útil", "Fim de Semana")
-  ) +
   labs(
     title = "Taxa de Atraso por Mês e Tipo de Dia",
     subtitle = "O risco do Fim de Semana é estrutural, independe do mês",
@@ -1224,7 +1215,6 @@ df_rides %>%
     "FALSE" = "Dia Útil", "TRUE" = "Fim de Semana"
   ))) +
   scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(values = paleta_geo) + # Reutilizando a paleta de clusters geográficos
   labs(
     title = "Quem Sofre com Estações Críticas?",
     subtitle = "O impacto explode para turistas no fim de semana",

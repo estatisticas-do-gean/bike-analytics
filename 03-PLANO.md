@@ -1,13 +1,9 @@
 # Plano de Trabalho e Abordagem Estatística – Sistema +BIKE
 
 > Projeto de Análise Exploratória e Modelagem Preditiva
->
 > **Ferramentas:** R (Tidyverse, Quarto, Git)
-> 
 > **Abordagem:** CRISP-DM Adaptado
-> 
 > **Objetivo:** Traduzir dados operacionais do sistema +BIKE em conhecimento acionável, por meio de análise exploratória e modelagem preditiva.
-> 
 
 ---
 
@@ -18,24 +14,24 @@
 
 flowchart LR
     A["
-    🧩 **FASE 1**  
-    **Fundamentação**  
+    🧩 FASE 1  
+     (Fundamentação)  
     _Validação & Limpeza_
     "]:::fase1 --> 
     B["
-    🔍 **FASE 2**  
-    **Exploração**  
+    🔍 FASE 2  
+     (Exploração)  
     _Padrões & Perfis_
     "]:::fase2 --> 
     C["
-    🤖 **FASE 3**  
-    **Modelagem**  
+    🤖 FASE 3  
+     (Modelagem)  
     _Predição de Risco_
     "]:::fase3 --> 
     D["
-    🗺️ **FASE 4**  
-    **Narrativa**  
-    _Decisão & Ação_
+    🗺️ FASE 4  
+     (Narrativa)  
+    _Comunicação & Decisão_
     "]:::fase4
 
     %% Rodapé do pipeline
@@ -55,58 +51,40 @@ classDef fase4 fill:#27AE60,stroke:#2ECC71,stroke-width:2px,color:#ECF0F1,font-w
 classDef footer fill:#F8F9F9,stroke:#BDC3C7,color:#7F8C8D,font-size:12px;
 ```
 
+---
 
-## 1. Introdução
+Este documento descreve o plano de trabalho estatístico para o projeto **+BIKE**, conforme o problema definido em `00-PROBLEMA.md` e a estrutura de dados apresentada em `01-ESTRUTURA_DADOS.md`.
 
-Este documento descreve o plano de trabalho estatístico do projeto **+BIKE**, conforme o problema definido em `00-PROBLEMA.md` e a estrutura de dados apresentada em `01-ESTRUTURA_DADOS.md`.
-
-Como estatístico, abordarei o desafio com técnicas de **análise de dados** e **modelagem preditiva**, aplicadas de forma **reprodutível** na linguagem **R**.
+Como estatístico, abordarei o desafio com técnicas de **análise de dados** e **modelagem preditiva**, aplicadas de forma **reprodutível** em linguagem de programação **R**.
 
 O objetivo é conduzir uma jornada analítica que vai da **validação forense dos dados brutos** à entrega de uma **heurística de decisão operacional**, narrada por meio de técnicas de *Data Storytelling*.
 
 ---
 
-## 2. Propósito e Estrutura
-
 O desafio é duplo:
 
 1. **Descrever o passado** – compreender o que *aconteceu* até agosto de 2018, atuando como um “historiador” dos dados.
-2. **Prever o futuro** – identificar padrões e estimar comportamentos futuros, atuando como um “profiler” estatístico.
+2. **Prever o futuro** – identificar padrões e estimar comportamentos futuros, atuando como um *“profiler”* estatístico.
 
 O trabalho será iterativo: cada fase alimenta e refina a seguinte, garantindo um ciclo de aprendizado contínuo.
 
 ---
 
-## 3. Fase 1 – Fundamentação: A Realidade por Trás dos Registros
+## Fase 1 – Fundamentação: A Realidade por Trás dos Registros
 
 > Antes de calcular médias ou somas, é preciso questionar se os dados refletem a realidade.
-> 
 
-A primeira responsabilidade é **auditar a integridade dos dados**. O que os `glimpse()` e `skim()` revelam não são meros erros técnicos, mas cicatrizes do processo de coleta.
+A primeira responsabilidade foi **auditar a integridade dos dados**. O que as etapas de tratamento revelam não são meros erros técnicos, mas cicatrizes do processo de coleta.
 
-### 3.1 Dados Ausentes
+Como visto anteriormente, a análise preparatória (diagnóstica, descritiva e limpeza) revelou:
 
-- **Análise de padrão:** 25% de valores ausentes em `ride_duration` e `ride_late` devem ser investigados. São *viagens não finalizadas no app*? *Bicicletas extraviadas?* *Falhas de sincronização?*
-- **Decisão metodológica:** Remover (`na.omit`) só é válido se a ausência for aleatória (MCAR). Caso contrário, há risco de viés — especialmente se viagens longas falham mais no registro.
-- **Exclusão formal:** `user_residence` (62% ausente) será removida do escopo de modelagem, evitando imputações artificiais.
-
-### 3.2 Validade e Anomalias
-
-- **Idades impossíveis:** Datas como *1928* ou *2028* não são outliers, são impossibilidades. Definiremos um intervalo plausível (10–80 anos) com base em regras de negócio.
-- **Integridade de chaves:** A *string* de nome da estação é mais confiável que o número (`station_number`) e será tratada como chave primária.
-
-### 3.3 Transformações Conceituais
-
-Converter texto (`chr`) em tempo (`datetime`) é mais que técnico — é conceitual.
-
-Essa transformação permite evoluir de uma visão baseada em *registros* para uma análise de *comportamentos* (fluxos, durações, sazonalidades).
+[RESUMO DAS PRINCIPAIS INTERVENÇÕES DA FASE 1: DATA PROCESSING]
 
 ---
 
 ## 4. Fase 2 – Exploração: O Diálogo com os Dados
 
-> A estatística começa quando deixamos de contar e passamos a interpretar.
-> 
+> A análise começa quando deixamos de contar e passamos a interpretar.
 
 Nesta fase, o foco é **descobrir histórias nos padrões**.
 
@@ -142,14 +120,12 @@ Mais do que médias, buscamos as variações, contrastes e ausências significat
 
 Definimos formalmente um problema de **classificação binária**:
 
-
 $$
 \begin{cases} 
 1, & \text{se viagem atrasada} \\
 0, & \text{caso contrário}
 \end{cases}
 $$
-
 
 ### 5.1 Duas Estratégias Complementares
 
@@ -212,4 +188,3 @@ Para garantir a **robustez** e **reprodutibilidade** do trabalho, todo o pipelin
 - Data Storytelling Techniques: https://towardsdatascience.com/data-storytelling-techniques-to-make-your-data-pop-5f3f2b8f4b6d
 - Model Evaluation Metrics: https://towardsdatascience.com/understanding-evaluation-metrics-for-classification-models-ff9f4d8b6f3c
 - mlbench Package Documentation: https://cran.r-project.org/web/packages/mlbench/mlbench.pdf
-
