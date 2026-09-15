@@ -30,7 +30,7 @@ root_dir <- here()
 
 message("✅ Ambiente configurado. R Version: ", R.version.string)
 
-# 1. FUNÇÕES AUXILIARES (ETL SEGURO) -------------------------------------------
+# 1. FUNÇÕES AUXILIARES -------------------------------------------
 
 read_data_safe <- function(path) {
   if (!file.exists(path)) stop(glue::glue("❌ Arquivo não encontrado: {path}"))

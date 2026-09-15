@@ -1,132 +1,156 @@
-# 🚲 Sistema +BIKE: Otimização Operacional e Preditiva
+# bike-analytics
 
-Uma abordagem estatística para otimização logística e previsão de churn involuntário em sistemas de *bike-sharing*.
+Projeto de análise estatística e modelagem preditiva aplicado à otimização operacional de um sistema de compartilhamento de bicicletas.
 
----
+O projeto investiga o comportamento dos usuários, identifica padrões operacionais e desenvolve uma abordagem preditiva para estimar, no momento da retirada da bicicleta, a probabilidade de uma viagem ultrapassar o limite de 60 minutos.
 
-## 🧠 Contexto Pessoal e Acadêmico
+A análise foi estruturada com foco em qualidade dos dados, rastreabilidade, reprodutibilidade e fundamentação estatística.
 
-Destaco este projeto como um dos trabalhos acadêmicos mais significativos que desenvolvi.
-A análise do sistema **BIKE+** foi uma **“consultoria simulada”**, proposta pelo excelente professor da disciplina **EST020 - Laboratório Supervisionado (7º período da graduação em Estatística)**.
+## Contexto
 
-O desafio foi resolvido **como se estivéssemos atuando profissionalmente**, com **poucas instruções diretas**, demandando autonomia total.
+O sistema +BIKE apresenta desafios relacionados à operação e ao comportamento dos usuários. Entre os principais problemas identificados está a ocorrência de viagens superiores a 60 minutos, que podem resultar em cobranças adicionais e impactar a experiência do usuário.
 
-Este projeto é **didático e detalhado de forma excessiva** — não por acaso. É o **primeiro que compartilho no GitHub** (ainda estou aprendendo a usar a plataforma) e sou naturalmente **perfeccionista** (reformulando o que está pronto).
+A partir desse contexto, o projeto busca transformar os dados operacionais disponíveis em informações que possam apoiar decisões relacionadas à operação e à experiência dos usuários.
 
-Os próximos repositórios terão uma abordagem mais objetiva e profissional, mas acredito que este formato possa **ajudar outras pessoas** a entender todo o processo envolvido em transformar **dados brutos em informação útil** — o que, por sinal, consome bastante tempo.
+O trabalho foi estruturado como uma consultoria analítica simulada, considerando um problema de negócio com informações inicialmente limitadas e exigindo a definição autônoma das etapas de análise.
 
-> 🎯 Meu objetivo inicial com este projeto é demonstrar que sei o que estou fazendo,
-> e que estou pronto para gerar resultados mensuráveis que possam, de alguma forma, **ajudar a sociedade (e conseguir um emprego!)**.
+## Objetivos
 
----
+### Objetivo geral
 
-## 📊 Visão Geral do Projeto
+Desenvolver uma análise estatística e uma abordagem preditiva capazes de apoiar a compreensão e a otimização da operação do sistema +BIKE.
 
-A **+BIKE** enfrenta desafios operacionais devido à falta de inteligência analítica sobre sua base de usuários.  
-O sistema sofre com desequilíbrio logístico e um ponto de atrito crítico: **viagens que excedem 60 minutos**, gerando **cobranças surpresa e insatisfação**.
+### Objetivos específicos
 
-Este projeto aplica **técnicas de Ciência de Dados e Estatística** para transformar dados brutos em decisões estratégicas.
+* Caracterizar o perfil dos usuários e o comportamento de utilização do sistema.
+* Identificar padrões temporais, demográficos e operacionais associados às viagens.
+* Avaliar a qualidade e a consistência dos dados disponíveis.
+* Investigar fatores relacionados à ocorrência de viagens superiores a 60 minutos.
+* Desenvolver uma abordagem preditiva para estimar a probabilidade de uma viagem ultrapassar esse limite no momento da retirada.
 
----
+## Abordagem metodológica
 
-## 🎯 Objetivos Principais
+O projeto segue uma abordagem baseada no ciclo CRISP-DM, adaptada às características do problema e com ênfase na etapa de preparação e validação dos dados antes da modelagem.
 
-1. **Diagnóstico Operacional**
-   - Mapear quem usa, como usa e onde estão os gargalos logísticos.
+As principais etapas são:
 
-2. **Modelagem Preditiva**
-   - Desenvolver um algoritmo capaz de calcular, no momento da retirada,
-     a probabilidade de uma viagem exceder o tempo limite (Atraso > 60 min).
+1. Definição do problema e das restrições de negócio.
+2. Estruturação e diagnóstico da base de dados.
+3. Limpeza, recuperação e sanitização dos dados.
+4. Análise exploratória e investigação estatística.
+5. Engenharia de atributos.
+6. Modelagem preditiva.
+7. Avaliação dos resultados.
+8. Interpretação e comunicação dos resultados.
 
----
+A documentação de cada etapa está organizada em arquivos específicos no repositório.
 
-## 🗂 Estrutura do Repositório
+## Engenharia e qualidade dos dados
 
-A documentação foi desenhada para garantir **reprodutibilidade e rastreabilidade**, seguindo o ciclo de vida dos dados:
+A preparação dos dados constitui uma etapa central do projeto. O processo não se limitou à remoção de registros inválidos, mas também envolveu a investigação das causas dos problemas identificados e, quando possível, a recuperação de informação.
 
-| Arquivo | Descrição | Status |
-|----------|------------|--------|
-| `00-PROBLEMA.md` | Definição técnica do problema, escopo e restrições de negócio (RFP). | ✅ Concluído |
-| `01-ESTRUTURA_DADOS.md` | Dicionário de dados, schema e diagnóstico inicial de qualidade. | ✅ Concluído |
-| `03-PLANO.md` | Planejamento metodológico e estratégia estatística. | ✅ Concluído |
-| `04-LIMPEZA_DADOS.md` | Relatório de Engenharia de Dados (Recuperação e Sanitização). | ✅ Concluído |
-| `05-ANALISE-EXPLORATORIA.md` | EDA: Teste de hipóteses e descoberta de padrões. | 🚧 Em andamento |
+Entre os principais procedimentos realizados estão:
 
----
+### Recuperação de registros
 
-## 🔧 Metodologia e Tech Stack
+Foi identificado um problema de inversão temporal em parte dos registros. A investigação permitiu recuperar 29.886 observações que poderiam ser descartadas em uma abordagem convencional de limpeza.
 
-O projeto segue um fluxo adaptado do **CRISP-DM**, com foco rigoroso na **validação dos dados antes da modelagem**.
+### Validação de idade
 
-**Principais tecnologias:**
-- 🧮 R (tidyverse ecosystem)
-- 📘 Documentação em Quarto / Markdown
-- 💾 Controle de Versão com Git & GitHub
+Foram identificados registros com valores de idade incompatíveis com a realidade, incluindo datas de nascimento futuras. Aproximadamente 2,9% da base foi afetada por esse tipo de inconsistência.
 
----
+### Tratamento de dados ausentes
 
-## 💡 Destaques da Engenharia de Dados (Fase 1)
+Os dados demográficos apresentaram aproximadamente 62% de ausência em determinadas variáveis.
 
-Antes de qualquer modelagem, foi realizado um processo de **sanitização forense** dos dados (`04-LIMPEZA_DADOS.md`), resultando em:
+Em vez de eliminar esses registros, foi adotada uma estratégia de tratamento que preserva a informação disponível e explicita a ausência como uma categoria analítica quando apropriado.
 
-- 🧩 **Recuperação de dados críticos:**
-  Identificação de erro de inversão temporal que permitiu **recuperar 29.886 registros** que seriam descartados.
+O detalhamento dessas decisões está documentado em `04-LIMPEZA_DADOS.md`.
 
-- 👶 **Validade biológica:**
-  Remoção de **2,9%** da base contendo idades impossíveis (ex: nascidos em 2028).
+## Estrutura da documentação
 
-- 🔍 **Tratamento de missing values:**
-  Estratégia de *explicitação* para os **62%** de dados demográficos ausentes,  
-  transformando ausência em categoria analítica interpretável.
+A documentação do projeto acompanha o fluxo analítico e busca manter rastreabilidade entre as decisões metodológicas, os dados e os resultados.
 
-> “Limpar dados não é apagar erros,
-> é **interpretar vestígios** para maximizar a informação disponível.”
+`00-PROBLEMA.md`
+Definição do problema, escopo, objetivos e restrições de negócio.
 
----
+`01-ESTRUTURA.md`
+Descrição da estrutura da base, dicionário de dados, *schema* e diagnóstico inicial de qualidade.
 
-## 🚀 Como Reproduzir
+`02-PROCESSAMENTO.md`
+Processo de limpeza, recuperação, validação e sanitização dos dados.
 
-Este projeto foi construído para ser totalmente **reprodutível**.
+`03-EXPLORATÓRIA.md`
+Análise exploratória, investigação de padrões e testes estatísticos.
 
-### 1️⃣ Clone o repositório:
+`04-MODELAGEM.md`
+Desenvolvimento do modelo preditivo, avaliação de performance e definição de *threshold*.
+
+Novas etapas da análise e da modelagem serão incorporadas à documentação conforme o desenvolvimento do projeto.
+
+## Tecnologias
+
+O projeto utiliza principalmente:
+
+* R
+* tidyverse
+* Quarto
+* Markdown
+* Git
+* GitHub
+
+O desenvolvimento analítico é realizado em R, utilizando o ecossistema tidyverse para manipulação e análise dos dados. A documentação é mantida em Markdown do Quarto, enquanto o versionamento é realizado com Git e GitHub.
+
+## Reprodução do projeto
+
+O projeto foi estruturado para permitir a reprodução do pipeline de análise a partir dos scripts e da documentação disponíveis no repositório.
+
+### Pré-requisitos
+
+* R
+* RStudio
+* Git
+
+### Clonar o repositório
+
 ```bash
-git clone https://github.com/estatisticas-do-gean/sistema-bike.git
+git clone https://github.com/estatisticas-do-gean/bike-analytics.git
 ```
-2️⃣ Abra o projeto no RStudio:
 
-Clique no arquivo Sistema_+Bike.Rproj
+### Abrir o projeto
 
-3️⃣ Instale as dependências:
+Abra o arquivo de projeto do RStudio (`.Rproj`) disponível no repositório.
 
-Os scripts verificam e instalam os pacotes automaticamente via pacman.
+### Instalar dependências
 
-4️⃣ Execute o pipeline de limpeza:
+Os scripts utilizam o pacote `pacman` para facilitar a verificação e instalação das dependências utilizadas no projeto.
 
-Abra e rode o script principal:
+### Executar a etapa de limpeza
 
 ```r
-source("analise-R/01_data_cleaning.R")
+source("analise-R/01-ETL.R")
 ```
-5️⃣ Explore os relatórios:
-Abra os arquivos `.md` na pasta raiz para acompanhar cada etapa da análise.
 
----
+### Consultar a documentação
 
-⚠️ Sobre os Dados
+Os arquivos Markdown disponíveis na raiz do projeto apresentam as decisões e resultados de cada etapa da análise.
 
-Os dados utilizados foram detalhados e analisados conforme o projeto documenta,
-porém não são fornecidos neste repositório por questões de confidencialidade.
-Quem precisar, pode entrar em contato diretamente.
+## Dados
 
-✉️ Contato
+Os dados utilizados no projeto não são disponibilizados neste repositório devido a questões de confidencialidade.
 
-👤 Gean Gabriel
-📊 Estatístico & Analista & Cientista de Dados
-📧 Gean.estatisticas@gmail.com
-🌐 ---
+Consequentemente, a reprodução integral dos resultados depende do acesso à base original. O repositório disponibiliza a estrutura metodológica, os scripts e a documentação necessários para compreender e executar o pipeline sobre os dados correspondentes.
 
-> “Transformar dados em decisões é mais do que técnica — é responsabilidade.”
+## Status do projeto
 
----
----
+O projeto encontra-se em desenvolvimento.
 
+As etapas de definição do problema, estruturação dos dados, planejamento metodológico e limpeza da base estão documentadas. A análise exploratória e as etapas posteriores de modelagem estão sendo desenvolvidas progressivamente.
+
+## Autor
+
+**Gean Gabriel**
+
+Estatístico, Analista de Dados e Cientista de Dados.
+
+[GitHub](https://github.com/estatisticas-do-gean)
