@@ -19,7 +19,7 @@ Este é o conjunto de dados principal, contendo **287.322 linhas e 10 colunas**,
 - **`ride_duration`**: Duração total da viagem, registrada em minutos.
 - **`ride_late`**: Houve ou não atraso na devolução da bicicleta.
 
-![1764081643785](image/01-ESTRUTURA_DADOS/1764081643785.png)
+![tabela-rides](image/estrutura_rides.png)
 
 ## 2. Tabela de Estações (Base `df_stations.csv`)
 
@@ -31,7 +31,7 @@ Este é um conjunto de dados complementar (ou de "lookup") que fornece informaç
 - **`lat`**: Coordenada geográfica de latitude da estação.
 - **`lon`**: Coordenada geográfica de longitude da estação.
 
-![1764081684668](image/01-ESTRUTURA_DADOS/1764081684668.png)
+![tabela-stations](image/estrutura_stations.png)
 
 > *Nota: As duas tabelas se relacionam através das colunas de estação (como `station_start` e `station_end` na Tabela de Viagens, que correspondem às estações listadas na Tabela de Estações).*
 

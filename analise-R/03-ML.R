@@ -51,3 +51,84 @@ read_data_safe <- function(path) {
 # Carregamento
 df_rides    <- read_data_safe(here("arquivos/outputs", "df_rides_eda_20260226.rds"))
 df_stations <- read_data_safe(here("arquivos/outputs", "df_stations_eda_20260226.rds"))
+
+dim(df_rides)
+glimpse(df_rides)
+sum(is.na(df_rides)) 
+
+df_rides %>%
+  summarise(
+    across(
+      everything(),
+      ~ sum(is.na(.x))
+    )
+  ) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "variavel",
+    values_to = "n_na"
+  ) %>%
+  mutate(
+    percentual_na = n_na / nrow(df_rides) * 100
+  ) %>%
+  arrange(desc(percentual_na))
+#numericas
+df_rides %>%
+  select(where(is.numeric)) %>%
+  summary()
+#categoricas
+df_rides %>%
+  select(where(~ is.character(.x) || is.factor(.x))) %>%
+  summarise(
+    across(
+      everything(),
+      ~ n_distinct(.x, na.rm = TRUE)
+    )
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "variavel",
+    values_to = "n_niveis"
+  ) %>%
+  arrange(desc(n_niveis))
+
+df_rides %>%
+  count(ride_late) %>%
+  mutate(
+    percentual = n / sum(n) * 100
+  )
+
+df_rides %>%
+  summarise(
+    n = n(),
+    positivos = sum(ride_late, na.rm = TRUE),
+    taxa = mean(ride_late, na.rm = TRUE)
+  )
+
+df_rides %>%
+  summarise(
+    across(
+      everything(),
+      ~ n_distinct(.x, na.rm = TRUE)
+    )
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "variavel",
+    values_to = "n_unicos"
+  ) %>%
+  arrange(desc(n_unicos))
+
+df_rides %>%
+  summarise(
+    across(
+      everything(),
+      ~ n_distinct(.x, na.rm = TRUE)
+    )
+  ) %>%
+  pivot_longer(
+    everything(),
+    names_to = "variavel",
+    values_to = "n_unicos"
+  ) %>%
+  filter(n_unicos <= 1)
