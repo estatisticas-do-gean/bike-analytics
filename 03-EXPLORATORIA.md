@@ -16,19 +16,19 @@ em que $X$ representa estritamente o conjunto de informações observáveis conh
 
 Para garantir uma narrativa fluida, orientada a dados e imune a vieses cognitivos, a exploração segue quatro dimensões progressivas:
 
-1.  Dimensão Univariada: Dissecação isolada de cada variável para compreensão de densidade, assimetria e comportamento de cauda (eventos extremos validados).
+1. Dimensão Univariada: Dissecação isolada de cada variável para compreensão de densidade, assimetria e comportamento de cauda (eventos extremos validados).
 
-2.  Dimensão Bivariada (Interações): O cruzamento de dimensões para revelar causalidades ocultas (ex: a taxa de atraso varia significativamente se a viagem começa em um parque aos domingos?).
+2. Dimensão Bivariada (Interações): O cruzamento de dimensões para revelar causalidades ocultas (ex: a taxa de atraso varia significativamente se a viagem começa em um parque aos domingos?).
 
-3.  Visualização Estratégica: Aplicação de heurísticas visuais (heatmaps, distribuições e grafos de rede) para sintetizar padrões multidimensionais que passariam despercebidos em matrizes numéricas.
+3. Visualização Estratégica: Aplicação de heurísticas visuais (heatmaps, distribuições e grafos de rede) para sintetizar padrões multidimensionais que passariam despercebidos em matrizes numéricas.
 
-4.  Criação de *Features* (*Feature Engineering*): A tradução de hipóteses levantadas visualmente em novas variáveis matemáticas que alimentarão os algoritmos de classificação.
+4. Criação de *Features* (*Feature Engineering*): A tradução de hipóteses levantadas visualmente em novas variáveis matemáticas que alimentarão os algoritmos de classificação.
 
 Cada achado desta fase não é tratado como uma mera curiosidade, mas como um bloco fundamental na construção de heurísticas operacionais e modelos de decisão baseados em dados.
 
 ------------------------------------------------------------------------
 
-## O quem
+## O quem:
 
 A primeira dimensão da Análise Exploratória busca responder uma pergunta fundamental: Quem é o agente causal que opera o sistema +BIKE?
 
@@ -48,7 +48,7 @@ O mapeamento demográfico provou também que o sistema opera sob forte viés de 
 
 As idades dos usuários revelou um ecossistema jovem-adulto:
 
-![box-plot-idades](image/05-ANALISE-EXPLORATORIA/box-plot-idades.png)
+![box-plot-idades](imagens/box-plot-idades.png)
 
 - Média: 28,6 anos.
 
@@ -62,7 +62,7 @@ A etapa mais valiosa da análise univariada e bivariada é cruzar os atributos d
 
 Ao confrontar as Faixas Etárias com a Taxa de Atraso Média do Sistema (aprox. 9,9%), descobrimos que o risco operacional não obedece a uma distribuição linear ou homogênea.
 
-![atraso por faixa etária](image/05-ANALISE-EXPLORATORIA/atraso-por-faixa-etaria.png)
+![atraso por faixa etária](imagens/atraso-por-faixa-etaria.png)
 
 > O Risco da Juventude (08–17 anos): Este grupo apresentou a segunda maior taxa relativa de viagens atrasadas. A hipótese central é o comportamento exploratório/lazer. O sistema deixa de ser um modal utilitário (A -\> B) e passa a ser uma plataforma de diversão prolongada, não raras vezes associada a passeios em grupo ou distrações operacionais. O Vale da Produtividade (25-44 anos): O público jovem-adulto apresentou as taxas de atraso sistematicamente abaixo da média geral. Para esse bloco, o sistema é estritamente utilitário (*commuting*). Há previsibilidade temporal e aderência estrita às regras do jogo. O Risco da Idade Avançada (55-64 anos e 65-90 anos): A cauda longa do sistema dispara alarmes de risco. Conforme a idade avança, a duração mediana das viagens sobe acentuadamente, elevando o risco de infração. Aqui, não se presume o uso de lazer exploratório, mas sim uma redução natural da velocidade mecânica de deslocamento, transformando trajetos que seriam curtos para jovens em viagens limítrofes (próximas aos 60 minutos) para idosos.
 
@@ -98,9 +98,13 @@ Por estas razões, o gênero emerge como uma variável de interesse para a model
 
 O perfil de menor risco para o ecossistema é o homem de 25 a 34 anos. O perfil de maior risco (que exige calibração preditiva urgente) divide-se nos extremos: jovens em viés exploratório e mulheres em faixas etárias mais avançadas.
 
+------------------------------------------------------------------------
+
+## O Onde:
+
 ### Geografia
 
-![nao-informado](image/05-ANALISE-EXPLORATORIA/nao-informado.png)
+![nao-informado](imagens/nao-informado.png)
 
 Um dos maiores desafios da análise geográfica foi lidar com a variável **residência do usuário. O que esse vazio significa?**
 
@@ -116,7 +120,7 @@ Sob a ótica dos Primeiros Princípios, a ausência massiva de dados em formulá
 
 3.  Outros / Turistas
 
-![cluster-geografico](image/05-ANALISE-EXPLORATORIA/cluster-geografico.png)
+![cluster-geografico](imagens/cluster-geografico.png)
 
 Para determinar a verdadeira natureza do grupo "Não Informado", os três *clusters* foram submetidos a uma bateria de testes comportamentais que espelham a física e a rotina do sistema.
 
@@ -134,20 +138,15 @@ A evidência empírica é irrefutável: a categoria "NAO INFORMADO" é o espelho
 
 O grupo não representa visitantes ocultos, mas sim residentes locais habituais que optaram por fricção zero no momento do cadastro. Se o modelo tratasse esses 63,9% de usuários como dados perdidos, perderíamos a capacidade de mapear a rotina utilitária da cidade.
 
-================================================================================
+#### Matriz de Densidade (Faixa Etária × Cluster Geográfico)
 
-MATRIZ DE DENSIDADE (FAIXA ETÁRIA x CLUSTER GEOGRÁFICO) ================================================================================
-
-Faixa Etária \| Local (DF) \| Não Informado \| Outros / Turistas
-
---------------------------------------------------------------------------------
-
-08–17 anos \| Baixa \| Média \| Baixa\
-18–24 anos \| Média \| MÁXIMA CRÍTICA \| Média\
-25–34 anos \| Alta \| Alta \| Média\
-35–54 anos \| Alta \| Média \| Baixa\
-55+ anos \| Média \| Baixa \| Baixa\
-================================================================================
+| Faixa Etária | Local (DF) | Não Informado | Outros / Turistas |
+|--------------|------------|---------------|-------------------|
+| 08–17 anos   | Baixa      | Média         | Baixa             |
+| 18–24 anos   | Média      | **MÁXIMA CRÍTICA** | Média        |
+| 25–34 anos   | Alta       | Alta          | Média             |
+| 35–54 anos   | Alta       | Média         | Baixa             |
+| 55+ anos     | Média      | Baixa         | Baixa             |
 
 > A matriz de densidade térmica (Heatmap: Idade vs Residência) forneceu a resposta. O grupo "Não Informado" é massivamente composto por jovens entre 18 e 24 anos. Em contrapartida, usuários acima de 35 anos apresentam uma propensão significativamente maior a completar os formulários de registro.A Hipótese de UX: A ausência da residência não é uma falha técnica do banco de dados, mas um comportamento geracional. A fricção do cadastro é rejeitada pelos usuários mais jovens em busca de acesso imediato ao serviço, enquanto usuários mais maduros toleram o processo burocrático de registro.
 
@@ -155,253 +154,85 @@ Em vez de descartar os dados, a modelagem preditiva aplicará uma redução de d
 
 ------------------------------------------------------------------------
 
-# 5️⃣ Padrões Temporais e Sazonalidade
+## O Quando:
 
-Após analisar o perfil dos usuários e a dimensão geográfica do sistema, a próxima etapa da EDA buscou responder uma pergunta central:
+### Tempo
 
-**Quando o sistema +BIKE apresenta maior probabilidade de atraso?**
+O tempo não é apenas um eixo passivo em um gráfico; na mobilidade urbana, ele é a força motriz que altera o propósito de uso do sistema. Se a demografia explica o "quem" e a geografia o "onde", a análise temporal responde à pergunta mais urgente para a saúde financeira e logística do +BIKE: Quando o sistema falha mais?
 
-A análise da dimensão temporal revelou que o comportamento do sistema não é homogêneo ao longo da semana. Na prática, o sistema opera sob **duas lógicas principais de uso**, associadas ao contexto em que as viagens ocorrem.
+Sob a ótica dos Primeiros Princípios, o atraso de uma bicicleta (`ride_late`) deixou de ser tratado como um evento estocástico (aleatório) e passou a ser analisado como um subproduto previsível do calendário e do relógio.
 
-------------------------------------------------------------------------
+A divisão da base entre Dias Úteis (`is_weekend = FALSE`) e Finais de Semana (`is_weekend = TRUE`) revelou a mudança de paradigma mais violenta de todo o ecossistema.
 
-## Uso Funcional — Dias Úteis
+- Dia Útil: De segunda a sexta-feira, o sistema opera sob a lógica funcional do *commuting*. A taxa de atraso permanece contida e estável, oscilando entre 6% e 8%. Hipótese: O usuário está ancorado a compromissos fixos (ponto eletrônico, aulas, integrações com outros modais).
 
-Durante os **dias úteis**, o sistema apresenta características típicas de uso voltado à mobilidade cotidiana.
+- Fim de Semana: Aos sábados e domingos, a taxa de atraso explode para a faixa de 16% a 24% (um risco relativo até três vezes maior). A bicicleta deixa de ser um vetor de trânsito (A $\rightarrow$ B) e torna-se um equipamento de lazer e turismo. 
 
-Observa-se:
+A interação crítica entre as horas do dia e o tipo de dia provou que o risco do fim de semana é estrutural. Não se trata de um pico isolado à tarde; a curva de risco do fim de semana opera em um patamar superior durante todas as horas do dia, anulando a previsibilidade funcional dos dias úteis.
 
-- **maior volume absoluto de viagens**;
-- **concentração horária nos períodos de pico**, especialmente início da manhã e final da tarde;
-- **taxas de atraso relativamente baixas**, geralmente entre **6% e 8%**.
+As interações entre as variáveis temporais e demográficas confirmaram os achados anteriores e, o conjunto destes achados, formaram as hipóteses que guiarão a modelagem preditiva. Por exemplo, ao plotar a taxa de atrasos contra as 24 horas do dia, a EDA mapeou os momentos exatos de falha operacional:
 
-Esse padrão é consistente com deslocamentos regulares associados a **trabalho, estudo ou integração com outros modos de transporte**.
+- Os Picos Diurnos (10h e 16h): Confirmando os achados da análise geográfica, o risco sistêmico não ocorre nos horários de maior volume (08h e 17h), mas sim nos vales intermediários (10h e 16h). Viagens iniciadas nestes horários possuem maior probabilidade de infração, configurando as janelas de ouro para a emissão de alertas e notificações preventivas no aplicativo.
 
-Nesse contexto, as viagens tendem a ser:
+- O Abismo da Madrugada (00h às 05h): As horas da madrugada apresentam um volume baixíssimo de viagens, mas concentram chances absolutas e desproporcionais de atraso. O uso noturno profundo correlaciona-se com viagens longas, desorientação espacial, uso recreativo prolongado ou fechamento de frota.
 
-- mais curtas
-- mais previsíveis
-- realizadas em horários bem definidos
+A análise macroscópica dos meses (Janeiro a Agosto) revelou duas narrativas sobrepostas: a expansão do negócio e a sazonalidade do risco.
 
-Essas características reduzem a probabilidade de desequilíbrios operacionais na rede.
+1. Sazonalidade do Risco (Taxa de Atraso): Embora o volume cresça linearmente, o risco não obedece à mesma regra. Os meses com as maiores taxas de atraso são Janeiro, Abril e Julho. A explicação causal é o calendário civil: são meses fortemente marcados por férias escolares, recesso universitário e feriados prolongados.
 
-------------------------------------------------------------------------
+2. A Estabilidade Subjacente: Ao cruzar o mês com o tipo de dia (Dia Útil vs. Fim de Semana), confirmamos que o atraso nos dias úteis permanece inabalável (~7%) o ano inteiro. As oscilações mensais de risco são quase inteiramente ditadas pelo aumento do comportamento de "fim de semana/férias" inserido na rotina desses meses específicos.
 
-## Uso Recreativo — Finais de Semana
+A evidência é definitiva: o atraso não é ruído estatístico, é um evento condicionado ao tempo. Casos de atraso não são aleatórios, mas sim previsíveis com base em padrões temporais e demográficos. A modelagem preditiva deve, portanto, incorporar inicialmente essas variáveis temporais para melhorar a precisão das previsões e permitir ações preventivas eficazes.
 
-Nos **finais de semana**, o comportamento do sistema muda de forma significativa.
+Até este ponto, a análise exploratória mapeou o ecossistema do +BIKE sob as óticas do usuário, do espaço e do calendário. Contudo, a questão mais crítica para o negócio permanecia oculta: o atraso ocorre por comportamento individual (o usuário que decide pedalar mais devagar) ou por limitações estruturais do próprio sistema?  A hipótese inicial ditava que o longo tempo de viagem era uma escolha do locatário. Entretanto, ao investigar a topologia da rede de estações e o fluxo logístico dos deslocamentos, os dados revelaram um mecanismo de falha puramente infraestrutural.
 
-A análise mostra:
+### Dinâmica da Rede
 
-- **menor volume total de viagens**;
-- **maior dispersão horária de uso**;
-- **duração média de viagem mais elevada**;
-- **aumento expressivo na taxa de atraso**.
+Até este ponto, a análise exploratória mapeou o ecossistema do +BIKE sob as óticas do usuário, do espaço e do calendário. Contudo, a questão mais crítica para o negócio permanecia oculta: o atraso ocorre por comportamento individual (o usuário que decide pedalar mais devagar) ou por limitações estruturais do próprio sistema?  
+A hipótese inicial ditava que o longo tempo de viagem era uma escolha do locatário. Entretanto, ao investigar a topologia da rede de estações e o fluxo logístico dos deslocamentos, os dados revelaram um mecanismo de falha puramente infraestrutural.
 
-![1772661488189](image/05-ANALISE-EXPLORATORIA/1772661488189.png)
+Ao analisar as métricas das estações, notou-se que pontos específicos da cidade (como "Brasil 21", "Torre de TV" e "SRTVS") figuravam sistematicamente no topo dos *rankings* de atraso. Para entender essa concentração, as viagens dessas "estações críticas" foram divididas em um teste A/B observacional: viagens que começavam nessas estações (Retirada) contra viagens que terminavam nessas estações (Devolução).
+O resultado revelou a verdadeira assimetria do problema:
 
-Enquanto em dias úteis a taxa de atraso orbita a casa dos 6% a 8% (uso funcional), nos **finais de semana o risco explode para valores entre 16% e 24%** (uso recreativo).
+- Retirada (Origem): Quando o usuário inicia a viagem em uma estação crítica, a taxa média de atraso gravita em torno de 8,6% (dentro da normalidade do sistema).
 
-![1772661525350](image/05-ANALISE-EXPLORATORIA/1772661525350.png)
+- Devolução (Destino): Quando a mesma estação crítica é o ponto final planejado, a taxa de atraso explode para aproximadamente 23,9%.
 
-Esse comportamento sugere um padrão de uso predominantemente **recreativo ou turístico**, no qual os usuários permanecem mais tempo com as bicicletas e realizam deslocamentos menos previsíveis.
+> O usuário consegue destrancar a bicicleta e iniciar sua viagem sem atritos.
+> O problema logístico e o risco de infração concentram-se esmagadoramente no final da jornada: o atraso nasce na impossibilidade de devolução.
 
-Como consequência, aumenta a probabilidade de **desequilíbrios temporários na rede de estações**, especialmente em áreas com maior concentração de devoluções.
+Ou seja, a incapacidade de devolução não é aleatória; ela obedece às leis da física do trânsito urbano. Através da criação da métrica de `saldo_fluxo` (Total de Entradas menos Total de Saídas por estação), a análise comprovou que o sistema sofre de um grave desequilíbrio logístico pendular.
 
-------------------------------------------------------------------------
+Algumas estações funcionam predominantemente como alimentadoras (emitem bicicletas), enquanto outras atuam como sumidouros (recebem bicicletas). A regressão linear entre o saldo de fluxo e a taxa de atraso apontou uma forte correlação positiva: quanto mais o saldo pendular pende para o acúmulo (entradas superando saídas), maior é o risco sistêmico de atraso naquelas docas.
+Este colapso do sistema segue uma cadeia de eventos determinística:
 
-A análise temporal demonstra que o atraso no sistema +BIKE **não ocorre de forma aleatória**.
+1. Desequilíbrio de Rede: Uma onda de usuários se desloca simultaneamente para destinos comuns.
 
-Ele está **fortemente condicionado ao contexto temporal em que a viagem ocorre**, especialmente:
+2. Saturação Física: O volume de bicicletas que chega supera a quantidade de docas físicas disponíveis na estação.
 
-- **dia da semana**
-- **hora do dia**
-- **tipo de uso predominante (funcional vs recreativo)**
+3. Navegação Forçada: Impossibilitado de devolver o equipamento, o usuário é expulso da estação planejada e precisa pedalar em busca de docas livres nas redondezas.
 
-Esses resultados indicam que **variáveis temporais desempenham papel fundamental na explicação do risco de atraso**, sendo, portanto, componentes essenciais para a etapa de **modelagem preditiva**.
+4. A Ruptura do Limiar: O tempo extra e improdutivo "rodando" pela estação alternativa consome os minutos finais de tolerância, rompendo a barreira operacional de 60 minutos e gerando a penalidade.
 
-------------------------------------------------------------------------
+Diante desta mecânica, a hipótese de que "viagens longas causam atrasos" precisou ser desconstruída. A métrica de duração registrada no banco de dados não representa apenas o tempo de deslocamento útil; ela carrega embutido o tempo de procura por vaga.
 
-> **🚦 Síntese Temporal:** O atraso não é um ruído estocástico. É um evento previsível, altamente condicionado à janela de tempo (hora/dia) em que a viagem ocorre.
+Ao isolar o excesso de duração (os minutos gastos além da mediana histórica para a mesma rota e horário), os dados provaram que o atraso surge majoritariamente dessa "gordura" logística final.
 
-------------------------------------------------------------------------
+> A duração da viagem não causa o atraso; ela registra o efeito do atraso. Ela é o sintoma operacional de uma rede saturada.
 
-# 6️⃣ Diagnóstico Causal: Rede, Estações e Gargalos Físicos
+Essa descoberta dita uma regra fundamental para a próxima etapa: utilizar a duração final da viagem como variável preditora caracterizaria um severo vazamento de dados (*data leakage*). O modelo estaria trapaceando ao utilizar a própria manifestação do problema para prevê-lo.
 
-# 6️⃣ Dinâmica da Rede e Gargalos Operacionais
+A exploração rigorosa dos dados enterra o pressuposto de que as infrações são anomalias aleatórias ou desvios de conduta do usuário.
+O atraso no +BIKE é condicionado pelo calendário, moldado pela demografia e engatilhado pela saturação física de docas.
 
-Até este ponto da análise, diversos fatores associados ao atraso já haviam sido identificados — perfil do usuário, contexto temporal e padrões geográficos. No entanto, permanecia uma questão central:
+Com a constatação de que a base de dados opera em uma linha de falha estrutural de 9% a 10%, o projeto de *Machine Learning* classifica-se formalmente como um problema de dados desbalanceados.
+O uso da acurácia como métrica primária é descartado, pois prever que "ninguém se atrasa" garantiria 90% de acerto sem gerar qualquer valor prático.
+O sucesso algorítmico será avaliado por *AUC-ROC*, *Precision* e *Recall*, focando na real identificação do risco.
 
-**o atraso ocorre por comportamento do usuário ou por limitações estruturais do sistema?**
+O objetivo da próxima fase é construir um classificador que estime a probabilidade de falha logística antes da viagem acontecer, com base estritamente no conhecimento disponível no tempo zero ($t_0$):
 
-A hipótese inicial considerava que viagens longas ou comportamentos individuais pudessem explicar grande parte dos atrasos. Entretanto, a análise espacial e de rede revelou um mecanismo diferente.
+$$P(\text{Atraso} = 1 \mid X)$$
 
-Os resultados indicam que o atraso está **fortemente associado à dinâmica física das estações**, especialmente ao equilíbrio entre retiradas e devoluções ao longo da rede.
+Nesta equação, $X$ representa as variáveis de contexto temporal, demográfico e geográfico da origem. Antecipar a ruptura logística não serve para punir o usuário, mas sim para fornecer inteligência ao operador da rede, permitindo remanejamento de frota e notificações dinâmicas antes que a saturação ocorra.
 
-## ![1773696994373](image/05-ANALISE-EXPLORATORIA/1773696994373.png)
-
-## ![1773697005516](image/05-ANALISE-EXPLORATORIA/1773697005516.png)
-
-Essa evidência sugere que o atraso não emerge apenas de decisões individuais do usuário, mas sim de restrições operacionais do próprio sistema.
-
-### A Dinâmica do Colapso Operacional
-
-A análise exploratória permitiu identificar um **mecanismo estrutural recorrente**, que pode ser descrito como uma cadeia de eventos operacionais.
-
-## ![1773696949295](image/05-ANALISE-EXPLORATORIA/1773696949295.png)
-
-1️⃣ **Desequilíbrio de fluxo entre estações**
-
-Algumas estações funcionam predominantemente como **origem**, enquanto outras concentram **devoluções**. Esse desequilíbrio gera acúmulo progressivo de bicicletas em determinados pontos da rede.
-
-------------------------------------------------------------------------
-
-2️⃣ **Saturação das docas de destino**
-
-Quando muitas bicicletas chegam simultaneamente a uma estação com capacidade limitada, as **docas disponíveis se esgotam**.
-
-Nesse momento, o sistema entra em uma condição de saturação local.
-
-## ![1773697687252](image/05-ANALISE-EXPLORATORIA/1773697687252.png)
-
-3️⃣ **Busca por estação alternativa**
-
-Sem vagas disponíveis na estação planejada, o usuário precisa continuar pedalando até encontrar outra estação com docas livres.
-
-Esse comportamento aumenta artificialmente o tempo total da viagem.
-
-------------------------------------------------------------------------
-
-4️⃣ **Registro do atraso**
-
-Como consequência, o sistema registra um **tempo de viagem superior ao limite operacional**, classificando a corrida como atraso.
-
-------------------------------------------------------------------------
-
-## ![1773697835518](image/05-ANALISE-EXPLORATORIA/1773697835518.png)
-
-------------------------------------------------------------------------
-
-# 7️⃣ Duração vs. Atraso — Separando Sintoma de Causa
-
-Uma das hipóteses mais importantes investigadas durante a EDA foi a relação entre **duração da viagem** e **ocorrência de atraso**.
-
-A pergunta inicial era direta:
-
-**Viagens mais longas causam atraso no sistema +BIKE?**
-
-Essa hipótese é intuitiva. Se um usuário permanece mais tempo com a bicicleta, seria razoável esperar maior probabilidade de ultrapassar o limite operacional da corrida.
-
-Entretanto, a análise detalhada dos dados revelou uma interpretação diferente.
-
-------------------------------------------------------------------------
-
-### Evidência Empírica
-
-De fato, as estatísticas descritivas mostram que **viagens longas apresentam maior taxa de atraso**. Enquanto viagens curtas quase nunca ultrapassam o limite de tempo, viagens com maior duração apresentam taxas de atraso significativamente mais elevadas.
-
-Esse padrão poderia levar à conclusão de que **a duração explica o atraso**.
-
-Contudo, a análise operacional da rede — realizada na etapa anterior — indica que essa interpretação seria equivocada.
-
-------------------------------------------------------------------------
-
-### Interpretação Operacional
-
-A duração observada da viagem **não representa apenas o tempo de deslocamento do usuário**.
-
-Ela também inclui o **tempo adicional gasto após a chegada ao destino**, quando o usuário não consegue devolver a bicicleta na estação planejada.
-
-Nesse cenário, o usuário precisa continuar pedalando até encontrar outra estação com docas disponíveis, prolongando artificialmente o tempo total da corrida.
-
-Assim, a duração registrada pelo sistema passa a refletir não apenas o deslocamento, mas também **o tempo imposto pela saturação da rede**.
-
-------------------------------------------------------------------------
-
-Essa distinção é fundamental para a interpretação correta do fenômeno.
-
-- **A duração não causa o atraso.**
-- **Ela registra o efeito do atraso.**
-
-Em outras palavras, a duração funciona como **um sintoma do problema**, e não como sua causa estrutural.
-
-------------------------------------------------------------------------
-
-A EDA demonstra que o atraso no sistema +BIKE **não decorre primariamente de decisões individuais dos usuários**, como pedalar mais devagar ou prolongar voluntariamente a viagem.
-
-Em vez disso, o fenômeno emerge das **restrições físicas e operacionais da rede de estações**, especialmente da indisponibilidade de docas no momento da devolução.
-
-## ![Atraso por dia útil x fim de semana, perfil geográfico](image/05-ANALISE-EXPLORATORIA/1773698039374.png)
-
-------------------------------------------------------------------------
-
-# 8️⃣ Linha de Base para Modelagem
-
-Após as etapas de limpeza, validação e exploração dos dados, foi possível estabelecer a **linha de base estatística do problema de atraso no sistema +BIKE**.
-
-A análise da variável `ride_late` indica que aproximadamente **9% a 10% das viagens registradas resultam em atraso**.
-
-Esse valor define o **nível estrutural de ocorrência do evento de interesse** dentro da base analisada.
-
-Do ponto de vista estatístico, isso caracteriza um **problema de classificação desbalanceada**, no qual a classe de interesse (viagens com atraso) representa uma parcela relativamente pequena do total de observações.
-
-Essa característica tem implicações diretas na avaliação de modelos preditivos.
-
-Se fosse utilizada apenas a métrica de **acurácia**, um modelo trivial que previsse sempre *“sem atraso”* alcançaria cerca de **90% de acerto**, apesar de não possuir qualquer utilidade prática para identificar situações de risco.
-
-Por esse motivo, a avaliação do modelo deverá priorizar métricas mais adequadas para cenários desbalanceados, como:
-
-- **AUC-ROC**, para avaliar a capacidade discriminativa do modelo;
-- **Precision**, para medir a proporção de previsões corretas entre os casos classificados como atraso;
-- **Recall**, para avaliar a capacidade do modelo de identificar viagens que efetivamente resultarão em atraso.
-
-Essas métricas permitem avaliar de forma mais robusta a capacidade do modelo em **detectar eventos raros, mas operacionalmente relevantes**.
-
-------------------------------------------------------------------------
-
-# 9️⃣ Encerramento da EDA e Transição para Modelagem
-
-A Análise Exploratória de Dados permitiu compreender de forma abrangente os padrões de funcionamento do sistema +BIKE e identificar os principais fatores associados à ocorrência de atrasos.
-
-De forma geral, os resultados indicam que o atraso no sistema:
-
-✔ **não é um ruído aleatório** nos dados;
-
-✔ **não decorre predominantemente de comportamento individual do usuário**;
-
-✔ **está fortemente associado ao contexto temporal de uso**, especialmente em finais de semana;
-
-✔ **emerge de desequilíbrios operacionais na rede de estações**, particularmente da saturação de docas durante o processo de devolução.
-
-Essas evidências permitem formalizar o problema de modelagem como a **estimação da probabilidade de atraso antes do início da viagem**.
-
-Matematicamente, o objetivo do modelo pode ser expresso como:
-
-``` latex
-P(Atraso=1∣X)P(\text{Atraso} = 1 \mid X)
-```
-
-em que $X$ representa o conjunto de variáveis observáveis **no momento da retirada da bicicleta**.
-
-Essa restrição é fundamental para garantir a validade operacional do modelo. Variáveis que representam **informações posteriores ao evento**, como a duração final da viagem, não podem ser utilizadas como preditores, pois constituem sintomas do atraso e não suas causas.
-
-Dessa forma, o modelo deve aprender a identificar **padrões estruturais de risco**, baseando-se apenas em informações disponíveis no início da corrida, como:
-
-- contexto temporal da viagem
-- características do usuário
-- estação de origem
-- condições operacionais da rede
-
-O objetivo da modelagem não é penalizar usuários por viagens longas, mas sim **antecipar contextos de risco operacional**, permitindo ações preventivas como:
-
-- redistribuição estratégica de bicicletas;
-- monitoramento de estações críticas;
-- recomendações de estações alternativas ao usuário.
-
-Por fim, vale ressaltar que o código completo utilizado nesta etapa encontra-se disponível no repositório do projeto:
-
-**EDA Completa:**
-
-[EDA Completa](/analise-R/02-EDA.R)
-
-Esse script contém análises adicionais, visualizações e verificações estatísticas que complementam os resultados apresentados neste documento e contribuem para uma compreensão mais profunda do comportamento do sistema +BIKE.
+Como na etapa anterior a base de dados foi enriquecida com *features* derivadas, a modelagem preditiva terá acesso a um conjunto de variáveis mais robusto e informativo, aumentando a capacidade de previsão do classificador.
